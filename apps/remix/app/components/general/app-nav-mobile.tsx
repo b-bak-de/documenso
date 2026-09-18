@@ -114,7 +114,7 @@ export const AppNavMobile = ({ isMenuOpen, onMenuOpenChange }: AppNavMobileProps
           </div>
 
           <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} Documenso, Inc.
+            © {new Date().getFullYear()} B-BAK Berlin Berufs- & Arbeitscoaching
             <br />
             <Trans>All rights reserved.</Trans>
           </p>

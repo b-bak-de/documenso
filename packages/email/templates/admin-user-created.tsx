@@ -11,7 +11,7 @@ export const AdminUserCreatedTemplate = ({
 }: TemplateAdminUserCreatedProps) => {
   const { _ } = useLingui();
 
-  const previewText = msg`Set your password for Documenso`;
+  const previewText = msg`Set your password for B-BAK`;
 
   return (
     <BbakEmailLayout assetBaseUrl={assetBaseUrl} previewText={_(previewText)}>

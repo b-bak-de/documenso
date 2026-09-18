@@ -33,7 +33,7 @@ export const addSigningPlaceholder = async (pdf: Buffer) => {
       SubFilter: 'adbe.pkcs7.detached',
       ByteRange: byteRange,
       Contents: PDFHexString.fromText(' '.repeat(SIGNATURE_PLACEHOLDER_LENGTH)),
-      Reason: PDFString.of('Signed by Documenso'),
+      Reason: PDFString.of('Signed by B-BAK'),
       M: PDFString.fromDate(new Date()),
     }),
   );

@@ -1,6 +1,6 @@
 ---
 title: API Versioning
-description: Versioning information for the Documenso public API.
+description: Versioning information for the B-BAK public API.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
@@ -9,7 +9,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
 
 ## Overview
 
-Documenso uses API versioning to manage changes to the public API. This allows us to introduce new features, fix bugs, and make other changes without breaking existing integrations.
+B-BAK uses API versioning to manage changes to the public API. This allows us to introduce new features, fix bugs, and make other changes without breaking existing integrations.
 
 <Callout type="info">The current version of the API is `v2`.</Callout>
 
@@ -23,7 +23,7 @@ Also, we may deprecate certain features or endpoints in the API. When we depreca
 
 ## Documents, Templates, and Envelopes
 
-Documenso has unified documents and templates into a single resource called an **envelope**. New integrations should create documents and templates through the `/envelope/*` endpoints. The `POST /document/create` and `POST /template/create` endpoints (including their `/beta` variants) are deprecated in favor of `POST /envelope/create`.
+B-BAK has unified documents and templates into a single resource called an **envelope**. New integrations should create documents and templates through the `/envelope/*` endpoints. The `POST /document/create` and `POST /template/create` endpoints (including their `/beta` variants) are deprecated in favor of `POST /envelope/create`.
 
 See [Migrating to the Envelope API](/docs/developers/api/migrate-to-envelopes) for the rationale and step-by-step migration examples.
 

@@ -871,11 +871,7 @@ const OrganisationAdminForm = ({ organisation, licenseFlags }: OrganisationAdmin
               <AlertDescription>
                 <span>¹&nbsp;</span>
                 <Trans>Your current license does not include these features.</Trans>{' '}
-                <Link
-                  to="https://docs.documenso.com/users/licenses/enterprise-edition"
-                  target="_blank"
-                  className="text-foreground underline hover:opacity-80"
-                >
+                <Link to="https://b-bak.de" target="_blank" className="text-foreground underline hover:opacity-80">
                   <Trans>Learn more</Trans>
                 </Link>
               </AlertDescription>

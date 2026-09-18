@@ -16,15 +16,15 @@ export type OrganisationJoinEmailProps = {
 
 export const OrganisationJoinEmailTemplate = ({
   assetBaseUrl = 'http://localhost:3002',
-  baseUrl = 'https://documenso.com',
+  baseUrl = 'https://b-bak.de',
   memberName = 'John Doe',
-  memberEmail = 'johndoe@documenso.com',
+  memberEmail = 'member@example.com',
   organisationName = 'Organisation Name',
   organisationUrl = 'demo',
 }: OrganisationJoinEmailProps) => {
   const { _ } = useLingui();
 
-  const previewText = msg`A member has joined your organisation on Documenso`;
+  const previewText = msg`A member has joined your organisation on B-BAK`;
 
   return (
     <BbakEmailLayout assetBaseUrl={assetBaseUrl} previewText={_(previewText)}>

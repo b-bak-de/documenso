@@ -1,6 +1,6 @@
 # @documenso/docs
 
-The Documenso documentation site, built with [Next.js](https://nextjs.org/) and [Fumadocs](https://fumadocs.dev/). Published at [docs.documenso.com](https://docs.documenso.com).
+The B-BAK documentation site, built with [Next.js](https://nextjs.org/) and [Fumadocs](https://fumadocs.dev/). Published at [b-bak.de](https://b-bak.de).
 
 Content lives under `content/docs/` as MDX. See [WRITING_STYLE.md](../../WRITING_STYLE.md) for the documentation writing conventions.
 

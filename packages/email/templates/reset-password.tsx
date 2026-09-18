@@ -11,7 +11,7 @@ export type ResetPasswordTemplateProps = Partial<TemplateResetPasswordProps>;
 
 export const ResetPasswordTemplate = ({
   userName = 'Lucas Smith',
-  userEmail = 'lucas@documenso.com',
+  userEmail = 'user@example.com',
   assetBaseUrl = 'http://localhost:3002',
 }: ResetPasswordTemplateProps) => {
   const { _ } = useLingui();
@@ -37,7 +37,7 @@ export const ResetPasswordTemplate = ({
         <Text className="mt-2 text-base text-muted-foreground">
           <Trans>
             Didn't request a password change? We are here to help you secure your account, just{' '}
-            <Link className="font-normal text-primary" href="mailto:hi@documenso.com">
+            <Link className="font-normal text-primary" href="mailto:info@b-bak.de">
               contact us
             </Link>
             .

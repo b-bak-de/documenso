@@ -10,14 +10,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://docs.documenso.com'),
+  metadataBase: new URL('https://b-bak.de'),
   title: {
-    template: '%s | Documenso Docs',
-    default: 'Documenso Docs',
+    template: '%s | B-BAK Docs',
+    default: 'B-BAK Docs',
   },
-  description: 'The official documentation for Documenso, the open-source document signing platform.',
+  description: 'The official documentation for B-BAK, the document signing platform.',
   openGraph: {
-    siteName: 'Documenso Docs',
+    siteName: 'B-BAK Docs',
     type: 'website',
   },
   twitter: {
@@ -30,7 +30,7 @@ export default function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
-        <PlausibleProvider domain="documenso.com">
+        <PlausibleProvider domain="b-bak.de">
           <RootProvider>{children}</RootProvider>
         </PlausibleProvider>
       </body>

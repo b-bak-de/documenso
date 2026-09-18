@@ -29,13 +29,13 @@ export type DocumentInviteEmailTemplateProps = {
 export const DocumentInviteEmailTemplate = ({
   customBody,
   documentName = 'Open Source Pledge.pdf',
-  inviterEmail = 'lucas@documenso.com',
+  inviterEmail = 'sender@example.com',
   inviterName = 'Lucas Smith',
   includeSenderDetails,
   organisationType,
   role,
   selfSigner = false,
-  signDocumentLink = 'https://documenso.com',
+  signDocumentLink = 'https://b-bak.de',
   teamName = '',
   assetBaseUrl = 'http://localhost:3002',
 }: DocumentInviteEmailTemplateProps) => {
