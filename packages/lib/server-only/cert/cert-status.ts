@@ -6,13 +6,13 @@ import { NEXT_PRIVATE_SIGNING_TRANSPORT } from '../../constants/app';
 
 /**
  * Whether the local P12 opens with the configured passphrase and is in date.
- * Skips AIA so this stays offline. gcloud-hsm and csc always report available.
+ * Skips AIA so this stays offline. Remote signing transports always report available.
  */
 export const getCertificateStatus = async () => {
   const transport = NEXT_PRIVATE_SIGNING_TRANSPORT();
 
   // Cannot inspect a remote HSM or CSC provider from this process.
-  if (transport === 'gcloud-hsm' || transport === 'csc') {
+  if (transport === 'gcloud-hsm' || transport === 'csc' || transport === 'trusted-signatures') {
     return { isAvailable: true };
   }
 

@@ -25,6 +25,11 @@ Self-hosted Documenso instances require a signing certificate. You can generate 
     href="/docs/self-hosting/configuration/signing-certificate/google-cloud-hsm"
   />
   <Card
+    title="Trusted Signatures"
+    description="Use the Trusted Signatures cloud service for Adobe-trusted PDF signatures."
+    href="#trusted-signatures"
+  />
+  <Card
     title="CSC (AES / QES)"
     description="Route signing through a third-party Trust Service Provider for Advanced and Qualified Electronic Signatures."
     href="/docs/self-hosting/configuration/signing-certificate/csc-qes"
@@ -99,4 +104,7 @@ See [CSC (AES / QES)](/docs/self-hosting/configuration/signing-certificate/csc-q
 </Tab>
 </Tabs>
 
+## Trusted Signatures
+
+Set `NEXT_PRIVATE_SIGNING_TRANSPORT=trusted-signatures` to use Trusted Signatures instead of a local certificate or HSM. Configure `NEXT_PRIVATE_SIGNING_TS_API_KEY_ID` and the hexadecimal `NEXT_PRIVATE_SIGNING_TS_API_KEY`. Set `NEXT_PRIVATE_SIGNING_TS_TIMESTAMP=true` to request a timestamp from the service.
 

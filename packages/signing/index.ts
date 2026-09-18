@@ -10,6 +10,7 @@ import { match } from 'ts-pattern';
 import { getTimestampAuthority } from './helpers/tsa';
 import { createGoogleCloudSigner } from './transports/google-cloud';
 import { createLocalSigner } from './transports/local';
+import { signWithTrustedSignatures } from './transports/trusted-signatures';
 
 export type SignOptions = {
   pdf: PDF;
@@ -36,6 +37,10 @@ const getSigner = async () => {
 };
 
 export const signPdf = async ({ pdf }: SignOptions) => {
+  if (NEXT_PRIVATE_SIGNING_TRANSPORT() === 'trusted-signatures') {
+    return await signWithTrustedSignatures({ pdf: Buffer.from(await pdf.save({ useXRefStream: true })) });
+  }
+
   const signer = await getSigner();
 
   const tsa = getTimestampAuthority();
