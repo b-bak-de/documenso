@@ -471,9 +471,9 @@ const SigningPageV1 = ({ data }: { data: Awaited<ReturnType<typeof handleV1Loade
       email={recipient.email}
       fullName={user?.email === recipient.email ? user?.name : recipient.name}
       signature={user?.email === recipient.email ? user?.signature : undefined}
-      typedSignatureEnabled={document.documentMeta?.typedSignatureEnabled}
-      uploadSignatureEnabled={document.documentMeta?.uploadSignatureEnabled}
-      drawSignatureEnabled={document.documentMeta?.drawSignatureEnabled}
+      typedSignatureEnabled={user ? true : document.documentMeta?.typedSignatureEnabled}
+      uploadSignatureEnabled={user ? true : document.documentMeta?.uploadSignatureEnabled}
+      drawSignatureEnabled={user ? true : document.documentMeta?.drawSignatureEnabled}
     >
       <DocumentSigningAuthProvider documentAuthOptions={document.authOptions} recipient={recipient} user={user}>
         {sessionData?.user && <AuthenticatedHeader />}
@@ -571,6 +571,7 @@ const SigningPageV2 = ({ data }: { data: Awaited<ReturnType<typeof handleV2Loade
       email={recipient.email}
       fullName={user?.email === recipient.email ? user?.name : recipient.name}
       signature={user?.email === recipient.email ? user?.signature : undefined}
+      isAuthenticated={!!user}
     >
       <DocumentSigningAuthProvider documentAuthOptions={envelope.authOptions} recipient={recipient} user={user}>
         <EnvelopeRenderProvider

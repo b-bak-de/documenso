@@ -67,11 +67,11 @@ export const SignFieldInitialsDialog = createCallable<SignFieldInitialsDialogPro
               />
 
               <DialogFooter>
-                <Button type="button" variant="secondary" onClick={() => call.end(null)}>
+                <Button type="button" variant="cancel" onClick={() => call.end(null)}>
                   <Trans>Cancel</Trans>
                 </Button>
 
-                <Button type="submit">
+                <Button type="submit" variant="success">
                   <Trans>Enter</Trans>
                 </Button>
               </DialogFooter>

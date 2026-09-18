@@ -4,6 +4,7 @@ services:
   database:
     image: postgres:15
     container_name: database
+    restart: unless-stopped
     volumes:
       - documenso_database:/var/lib/postgresql/data
     healthcheck:
@@ -21,6 +22,7 @@ services:
   inbucket:
     image: inbucket/inbucket
     container_name: mailserver
+    restart: unless-stopped
     ports:
       - 9000:9000
       - 2500:2500
@@ -29,6 +31,7 @@ services:
   redis:
     image: redis:8-alpine
     container_name: redis
+    restart: unless-stopped
     ports:
       - 63790:6379
     volumes:
@@ -37,6 +40,7 @@ services:
   minio:
     image: minio/minio
     container_name: minio
+    restart: unless-stopped
     ports:
       - 9002:9002
       - 9001:9001

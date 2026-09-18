@@ -60,16 +60,24 @@ export const usePageRenderer = (renderFunction: RenderFunction, pageData: PageRe
 
     stage.current.add(pageLayer.current);
 
-    renderFunction({
-      stage: stage.current,
-      pageLayer: pageLayer.current,
-    });
+    let isActive = true;
 
-    void document.fonts.ready.then(() => {
-      pageLayer.current?.batchDraw();
+    void Promise.all([document.fonts.load('18px Caveat'), document.fonts.ready]).then(() => {
+      const currentStage = stage.current;
+      const currentPageLayer = pageLayer.current;
+
+      if (!isActive || !currentStage || !currentPageLayer) {
+        return;
+      }
+
+      renderFunction({
+        stage: currentStage,
+        pageLayer: currentPageLayer,
+      });
     });
 
     return () => {
+      isActive = false;
       stage.current?.destroy();
       stage.current = null;
     };

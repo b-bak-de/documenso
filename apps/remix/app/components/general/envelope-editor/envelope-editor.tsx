@@ -349,7 +349,7 @@ export const EnvelopeEditor = () => {
                 <EnvelopeDistributeDialog
                   documentRootPath={relativePath.documentRootPath}
                   trigger={
-                    <Button variant="ghost" size="sm" className="w-full justify-start" title={t(msg`Send Envelope`)}>
+                    <Button variant="success" size="sm" className="w-full justify-start" title={t(msg`Send Envelope`)}>
                       <SendIcon className="h-4 w-4" />
 
                       {!minimizeLeftSidebar && (
@@ -364,7 +364,12 @@ export const EnvelopeEditor = () => {
                 <EnvelopeRedistributeDialog
                   envelope={envelope}
                   trigger={
-                    <Button variant="ghost" size="sm" className="w-full justify-start" title={t(msg`Resend Envelope`)}>
+                    <Button
+                      variant="success"
+                      size="sm"
+                      className="w-full justify-start"
+                      title={t(msg`Resend Envelope`)}
+                    >
                       <SendIcon className="h-4 w-4" />
 
                       {!minimizeLeftSidebar && (

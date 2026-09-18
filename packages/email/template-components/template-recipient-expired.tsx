@@ -40,7 +40,7 @@ export const TemplateRecipientExpired = ({
 
         <Section className="my-4 text-center">
           <Button
-            className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-center font-medium text-primary-foreground text-sm no-underline"
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-center font-medium text-[#111827] text-sm no-underline"
             href={documentLink}
           >
             <Trans>View Document</Trans>

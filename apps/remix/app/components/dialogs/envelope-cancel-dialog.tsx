@@ -114,7 +114,7 @@ export const EnvelopeCancelDialog = ({ id, title, trigger, onCancel }: EnvelopeC
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="secondary" disabled={isPending}>
+            <Button type="button" variant="cancel" disabled={isPending}>
               <Trans>Cancel</Trans>
             </Button>
           </DialogClose>

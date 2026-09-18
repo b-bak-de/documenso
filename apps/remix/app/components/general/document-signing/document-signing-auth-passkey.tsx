@@ -150,7 +150,7 @@ export const DocumentSigningAuthPasskey = ({
         </Alert>
 
         <DialogFooter>
-          <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
+          <Button type="button" variant="cancel" onClick={() => onOpenChange(false)}>
             <Trans>Close</Trans>
           </Button>
         </DialogFooter>
@@ -176,11 +176,11 @@ export const DocumentSigningAuthPasskey = ({
         </Alert>
 
         <DialogFooter>
-          <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
+          <Button type="button" variant="cancel" onClick={() => onOpenChange(false)}>
             <Trans>Cancel</Trans>
           </Button>
 
-          <Button type="button" onClick={() => void refetchPasskeys()}>
+          <Button type="button" variant="success" onClick={() => void refetchPasskeys()}>
             <Trans>Retry</Trans>
           </Button>
         </DialogFooter>
@@ -229,14 +229,14 @@ export const DocumentSigningAuthPasskey = ({
         </Alert>
 
         <DialogFooter>
-          <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
+          <Button type="button" variant="cancel" onClick={() => onOpenChange(false)}>
             <Trans>Cancel</Trans>
           </Button>
 
           <PasskeyCreateDialog
             onSuccess={async () => refetchPasskeys()}
             trigger={
-              <Button>
+              <Button variant="success">
                 <Trans>Setup</Trans>
               </Button>
             }
@@ -293,11 +293,11 @@ export const DocumentSigningAuthPasskey = ({
             )}
 
             <DialogFooter>
-              <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
+              <Button type="button" variant="cancel" onClick={() => onOpenChange(false)}>
                 <Trans>Cancel</Trans>
               </Button>
 
-              <Button type="submit" loading={isCurrentlyAuthenticating}>
+              <Button type="submit" variant="success" loading={isCurrentlyAuthenticating}>
                 <Trans>Sign</Trans>
               </Button>
             </DialogFooter>

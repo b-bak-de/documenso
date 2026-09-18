@@ -174,12 +174,12 @@ export function AssistantConfirmationDialog({
               </div>
 
               <DialogFooter className="mt-4">
-                <Button type="button" variant="secondary" onClick={onClose} disabled={isSubmitting}>
+                <Button type="button" variant="cancel" onClick={onClose} disabled={isSubmitting}>
                   <Trans>Cancel</Trans>
                 </Button>
                 <Button
                   type="button"
-                  variant={hasUninsertedFields ? 'destructive' : 'default'}
+                  variant={hasUninsertedFields ? 'destructive' : 'success'}
                   disabled={isSubmitting}
                   onClick={handleSubmit}
                   loading={isSubmitting}

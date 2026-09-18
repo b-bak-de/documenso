@@ -144,6 +144,7 @@ const AcceptOrganisationInvitationButton = ({ token }: { token: string }) => {
 
   return (
     <Button
+      variant="success"
       onClick={async () => acceptOrganisationInvitation({ token })}
       loading={isPending}
       disabled={isPending || isSuccess}
@@ -187,7 +188,7 @@ const DeclineOrganisationInvitationButton = ({ token }: { token: string }) => {
       onClick={async () => declineOrganisationInvitation({ token })}
       loading={isPending}
       disabled={isPending || isSuccess}
-      variant="ghost"
+      variant="destructive"
     >
       <Trans>Decline</Trans>
     </Button>

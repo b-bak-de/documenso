@@ -1,0 +1,17 @@
+[Unit]
+Description=Documenso Remix application
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=gow
+WorkingDirectory=/home/gow/documenso
+EnvironmentFile=/home/gow/documenso/.env
+Environment=NODE_ENV=development
+ExecStart=/home/gow/.nvm/versions/node/v24.5.0/bin/npm run dev:remix
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

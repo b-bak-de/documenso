@@ -1,118 +1,73 @@
 import { RECIPIENT_ROLES_DESCRIPTION } from '@documenso/lib/constants/recipient-roles';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
-import { Trans } from '@lingui/react/macro';
 import type { RecipientRole } from '@prisma/client';
 import { OrganisationType } from '@prisma/client';
 
-import { Body, Container, Head, Hr, Html, Link, Preview, Section, Text } from '../components';
-import { TemplateBrandingLogo } from '../template-components/template-branding-logo';
+import { Section, Text } from '../components';
+import { BbakEmailLayout } from '../template-components/bbak-email-layout';
 import { TemplateCustomMessageBody } from '../template-components/template-custom-message-body';
-import type { TemplateDocumentInviteProps } from '../template-components/template-document-invite';
 import { TemplateDocumentInvite } from '../template-components/template-document-invite';
-import { TemplateFooter } from '../template-components/template-footer';
 
-export type DocumentInviteEmailTemplateProps = Partial<TemplateDocumentInviteProps> & {
+export type DocumentInviteEmailTemplateProps = {
   customBody?: string;
+  documentName?: string;
+  includeSenderDetails?: boolean;
+  inviterEmail?: string;
+  inviterName?: string;
+  organisationType?: OrganisationType;
+  recipientName?: string;
+  reportUrl?: string;
   role: RecipientRole;
   selfSigner?: boolean;
-  teamName?: string;
+  signDocumentLink?: string;
   teamEmail?: string;
-  includeSenderDetails?: boolean;
-  organisationType?: OrganisationType;
-  reportUrl?: string;
+  teamName?: string;
+  assetBaseUrl?: string;
 };
 
 export const DocumentInviteEmailTemplate = ({
-  inviterName = 'Lucas Smith',
-  inviterEmail = 'lucas@documenso.com',
-  documentName = 'Open Source Pledge.pdf',
-  signDocumentLink = 'https://documenso.com',
-  assetBaseUrl = 'http://localhost:3002',
   customBody,
-  role,
-  selfSigner = false,
-  teamName = '',
+  documentName = 'Open Source Pledge.pdf',
+  inviterEmail = 'lucas@documenso.com',
+  inviterName = 'Lucas Smith',
   includeSenderDetails,
   organisationType,
-  reportUrl,
+  role,
+  selfSigner = false,
+  signDocumentLink = 'https://documenso.com',
+  teamName = '',
+  assetBaseUrl = 'http://localhost:3002',
 }: DocumentInviteEmailTemplateProps) => {
   const { _ } = useLingui();
-
   const action = _(RECIPIENT_ROLES_DESCRIPTION[role].actionVerb).toLowerCase();
-
-  let previewText = msg`${inviterName} has invited you to ${action} ${documentName}`;
-
-  if (organisationType === OrganisationType.ORGANISATION) {
-    previewText = includeSenderDetails
-      ? msg`${inviterName} on behalf of "${teamName}" has invited you to ${action} ${documentName}`
-      : msg`${teamName} has invited you to ${action} ${documentName}`;
-  }
-
-  if (selfSigner) {
-    previewText = msg`Please ${action} your document ${documentName}`;
-  }
+  const senderName = organisationType === OrganisationType.ORGANISATION ? teamName : inviterName;
+  const previewText = selfSigner
+    ? msg`Please ${action} your document ${documentName}`
+    : msg`${senderName} has invited you to ${action} ${documentName}`;
 
   return (
-    <Html>
-      <Head />
-
-      <Body className="mx-auto my-auto bg-background font-sans">
-        <Preview>{_(previewText)}</Preview>
-
+    <BbakEmailLayout assetBaseUrl={assetBaseUrl} previewText={_(previewText)}>
+      <TemplateDocumentInvite
+        inviterName={inviterName}
+        inviterEmail={inviterEmail ?? ''}
+        documentName={documentName}
+        signDocumentLink={signDocumentLink}
+        assetBaseUrl={assetBaseUrl}
+        role={role}
+        selfSigner={selfSigner}
+        organisationType={organisationType}
+        teamName={teamName}
+        includeSenderDetails={includeSenderDetails}
+      />
+      {customBody && (
         <Section>
-          <Container className="mx-auto mt-8 mb-2 max-w-xl rounded-lg border border-border border-solid p-4 backdrop-blur-sm">
-            <Section>
-              <TemplateBrandingLogo assetBaseUrl={assetBaseUrl} className="mb-4 h-6" />
-
-              <TemplateDocumentInvite
-                inviterName={inviterName}
-                inviterEmail={inviterEmail}
-                documentName={documentName}
-                signDocumentLink={signDocumentLink}
-                assetBaseUrl={assetBaseUrl}
-                role={role}
-                selfSigner={selfSigner}
-                organisationType={organisationType}
-                teamName={teamName}
-                includeSenderDetails={includeSenderDetails}
-              />
-            </Section>
-          </Container>
-
-          <Container className="mx-auto mt-12 max-w-xl">
-            <Section>
-              {organisationType === OrganisationType.PERSONAL && (
-                <Text className="my-4 font-semibold text-base">
-                  <Trans>
-                    {inviterName}{' '}
-                    <Link className="font-normal text-muted-foreground" href={`mailto:${inviterEmail}`}>
-                      ({inviterEmail})
-                    </Link>
-                  </Trans>
-                </Text>
-              )}
-
-              <Text className="mt-2 text-base text-muted-foreground">
-                {customBody ? (
-                  <TemplateCustomMessageBody text={customBody} />
-                ) : (
-                  <Trans>
-                    {inviterName} has invited you to {action} the document "{documentName}".
-                  </Trans>
-                )}
-              </Text>
-            </Section>
-          </Container>
-
-          <Hr className="mx-auto mt-12 max-w-xl" />
-
-          <Container className="mx-auto max-w-xl">
-            <TemplateFooter reportUrl={reportUrl} />
-          </Container>
+          <Text className="text-muted">
+            <TemplateCustomMessageBody text={customBody} />
+          </Text>
         </Section>
-      </Body>
-    </Html>
+      )}
+    </BbakEmailLayout>
   );
 };
 

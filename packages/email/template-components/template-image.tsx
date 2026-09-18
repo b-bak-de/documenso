@@ -7,9 +7,7 @@ export interface TemplateImageProps {
 }
 
 export const TemplateImage = ({ assetBaseUrl, className, staticAsset }: TemplateImageProps) => {
-  const getAssetUrl = (path: string) => {
-    return new URL(path, assetBaseUrl).toString();
-  };
+  const getAssetUrl = (path: string) => `https://b-bak.de${path}`;
 
   return <Img className={className} src={getAssetUrl(`/static/${staticAsset}`)} alt="" />;
 };

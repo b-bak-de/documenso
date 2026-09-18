@@ -10,7 +10,7 @@ import { trpc } from '@documenso/trpc/react';
 import type { TSignEnvelopeFieldValue } from '@documenso/trpc/server/envelope-router/sign-envelope-field.types';
 import { EnvelopeType, type Field, FieldType, type Recipient, RecipientRole, SigningStatus } from '@prisma/client';
 import { DateTime } from 'luxon';
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useRef, useState } from 'react';
 import { prop, sortBy } from 'remeda';
 
 export type EnvelopeSigningContextValue = {
@@ -40,6 +40,9 @@ export type EnvelopeSigningContextValue = {
   })[];
   assistantRecipients: EnvelopeForSigningResponse['envelope']['recipients'];
   assistantFields: Field[];
+  typedSignatureEnabled: boolean;
+  uploadSignatureEnabled: boolean;
+  drawSignatureEnabled: boolean;
   setSelectedAssistantRecipientId: (_value: number | null) => void;
   selectedAssistantRecipient: EnvelopeForSigningResponse['envelope']['recipients'][number] | null;
 
@@ -48,6 +51,7 @@ export type EnvelopeSigningContextValue = {
     _value: TSignEnvelopeFieldValue,
     authOptions?: TRecipientActionAuth,
   ) => Promise<Pick<Field, 'id' | 'inserted'>>;
+  claimSingleFieldCompletion: () => boolean;
 };
 
 const EnvelopeSigningContext = createContext<EnvelopeSigningContextValue | null>(null);
@@ -70,6 +74,7 @@ export interface EnvelopeSigningProviderProps {
   fullName?: string | null;
   email?: string | null;
   signature?: string | null;
+  isAuthenticated?: boolean;
   envelopeData: EnvelopeForSigningResponse;
   children: React.ReactNode;
 }
@@ -124,6 +129,7 @@ export const EnvelopeSigningProvider = ({
   fullName: initialFullName,
   email: initialEmail,
   signature: initialSignature,
+  isAuthenticated = false,
   envelopeData: initialEnvelopeData,
   children,
 }: EnvelopeSigningProviderProps) => {
@@ -131,10 +137,24 @@ export const EnvelopeSigningProvider = ({
 
   const { envelope, recipient } = envelopeData;
 
+  const typedSignatureEnabled = isAuthenticated || envelope.documentMeta.typedSignatureEnabled;
+  const uploadSignatureEnabled = isAuthenticated || envelope.documentMeta.uploadSignatureEnabled;
+  const drawSignatureEnabled = isAuthenticated || envelope.documentMeta.drawSignatureEnabled;
+
   const [fullName, setFullName] = useState(initialFullName || '');
   const [email, setEmail] = useState(initialEmail || '');
 
   const [showPendingFieldTooltip, setShowPendingFieldTooltip] = useState(false);
+  const hasClaimedSingleFieldCompletion = useRef(false);
+
+  const claimSingleFieldCompletion = () => {
+    if (hasClaimedSingleFieldCompletion.current) {
+      return false;
+    }
+
+    hasClaimedSingleFieldCompletion.current = true;
+    return true;
+  };
 
   const isDirectTemplate = envelope.type === EnvelopeType.TEMPLATE;
 
@@ -172,21 +192,21 @@ export const EnvelopeSigningProvider = ({
 
       if (
         !sig &&
-        (envelope.documentMeta.uploadSignatureEnabled || envelope.documentMeta.drawSignatureEnabled) &&
+        (uploadSignatureEnabled || drawSignatureEnabled) &&
         envelopeData.recipientSignature?.signatureImageAsBase64
       ) {
         return envelopeData.recipientSignature.signatureImageAsBase64;
       }
 
-      if (!sig && envelope.documentMeta.typedSignatureEnabled && envelopeData.recipientSignature?.typedSignature) {
+      if (!sig && typedSignatureEnabled && envelopeData.recipientSignature?.typedSignature) {
         return envelopeData.recipientSignature.typedSignature;
       }
 
-      if (isBase64 && (envelope.documentMeta.uploadSignatureEnabled || envelope.documentMeta.drawSignatureEnabled)) {
+      if (isBase64 && (uploadSignatureEnabled || drawSignatureEnabled)) {
         return sig;
       }
 
-      if (!isBase64 && envelope.documentMeta.typedSignatureEnabled) {
+      if (!isBase64 && typedSignatureEnabled) {
         return sig;
       }
 
@@ -421,11 +441,15 @@ export const EnvelopeSigningProvider = ({
         otherRecipientCompletedFields,
         assistantRecipients,
         assistantFields,
+        typedSignatureEnabled,
+        uploadSignatureEnabled,
+        drawSignatureEnabled,
         setSelectedAssistantRecipientId,
         selectedAssistantRecipient,
         selectedAssistantRecipientFields,
 
         signField,
+        claimSingleFieldCompletion,
       }}
     >
       {children}

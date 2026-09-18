@@ -35,6 +35,10 @@ export default defineConfig({
   server: {
     port: parseInt(process.env.PORT || '3000', 10),
     strictPort: true,
+    allowedHosts: process.env.NEXT_PUBLIC_WEBAPP_URL ? [new URL(process.env.NEXT_PUBLIC_WEBAPP_URL).hostname] : [],
+    watch: {
+      ignored: ['**/packages/lib/translations/**/*.mjs'],
+    },
   },
   plugins: [
     viteStaticCopy({

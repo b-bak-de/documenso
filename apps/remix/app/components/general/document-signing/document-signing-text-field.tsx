@@ -312,7 +312,7 @@ export const DocumentSigningTextField = ({ field, onSignField, onUnsignField }: 
             <div className="mt-4 flex w-full flex-1 flex-nowrap gap-4">
               <Button
                 type="button"
-                variant="secondary"
+                variant="cancel"
                 className="flex-1"
                 onClick={() => {
                   setShowCustomTextModal(false);
@@ -324,6 +324,7 @@ export const DocumentSigningTextField = ({ field, onSignField, onUnsignField }: 
 
               <Button
                 type="button"
+                variant="success"
                 className="flex-1"
                 disabled={!localText || userInputHasErrors}
                 onClick={() => onDialogSignClick()}

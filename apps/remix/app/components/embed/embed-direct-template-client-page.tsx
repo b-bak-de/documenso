@@ -410,7 +410,7 @@ export const EmbedDirectTemplateClientPage = ({
                   </Button>
                 ) : (
                   <Button
-                    variant="default"
+                    variant="success"
                     size="sm"
                     className="md:hidden"
                     disabled={isThrottled || (hasSignatureField && !signatureValid)}
@@ -497,11 +497,12 @@ export const EmbedDirectTemplateClientPage = ({
 
             <div className="mt-4 hidden w-full grid-cols-2 items-center group-data-[expanded]/document-widget:grid md:grid">
               {pendingFields.length > 0 ? (
-                <Button className="col-start-2" onClick={() => onNextFieldClick()}>
+                <Button variant="success" className="col-start-2" onClick={() => onNextFieldClick()}>
                   <Trans>Next</Trans>
                 </Button>
               ) : (
                 <Button
+                  variant="success"
                   className="col-start-2"
                   disabled={isThrottled}
                   loading={isSubmitting}

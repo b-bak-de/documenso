@@ -23,8 +23,22 @@ export type RenderOptions = ReactEmail.Options & {
  * and the default + tenant paths can't drift. Used when a tenant has no
  * (entitled) brand colours.
  */
-const DEFAULT_EMAIL_BRANDING_COLORS: EmailBrandingColors =
-  resolveEmailBrandingColors(DEFAULT_BRAND_COLORS) ?? DEFAULT_BRAND_COLORS;
+const DEFAULT_EMAIL_BRANDING_COLORS: EmailBrandingColors = {
+  background: '#f8f9fa',
+  foreground: '#1b263b',
+  muted: '#f1f4f7',
+  mutedForeground: '#415a77',
+  primary: '#e09f3e',
+  primaryForeground: '#ffffff',
+  secondary: '#1b263b',
+  secondaryForeground: '#ffffff',
+  accent: '#e09f3e',
+  accentForeground: '#1b263b',
+  destructive: resolveEmailBrandingColors(DEFAULT_BRAND_COLORS)?.destructive ?? '#ff0000',
+  destructiveForeground: '#ffffff',
+  warning: resolveEmailBrandingColors(DEFAULT_BRAND_COLORS)?.warning ?? '#e1cb05',
+  border: '#d6dee7',
+};
 
 /**
  * Map the resolved colour set to flat semantic Tailwind tokens. Templates use
@@ -60,7 +74,7 @@ const buildEmailColors = (brandingColors?: EmailBrandingColors): Record<string, 
 export const render = async (element: React.ReactNode, options?: RenderOptions) => {
   const { branding, ...otherOptions } = options ?? {};
 
-  const tailwindColors = buildEmailColors(branding?.brandingColors);
+  const tailwindColors = buildEmailColors();
 
   return ReactEmail.render(
     <BrandingProvider branding={branding}>
@@ -87,7 +101,7 @@ export const renderWithI18N = async (element: React.ReactNode, options?: RenderO
     throw new Error('i18n is required');
   }
 
-  const tailwindColors = buildEmailColors(branding?.brandingColors);
+  const tailwindColors = buildEmailColors();
 
   return ReactEmail.render(
     <I18nProvider i18n={i18n}>

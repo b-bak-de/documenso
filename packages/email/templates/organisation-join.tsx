@@ -1,10 +1,8 @@
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
-
-import { Body, Container, Head, Hr, Html, Preview, Section, Text } from '../components';
-import { TemplateBrandingLogo } from '../template-components/template-branding-logo';
-import { TemplateFooter } from '../template-components/template-footer';
+import { Section, Text } from '../components';
+import { BbakEmailLayout } from '../template-components/bbak-email-layout';
 import TemplateImage from '../template-components/template-image';
 
 export type OrganisationJoinEmailProps = {
@@ -29,38 +27,20 @@ export const OrganisationJoinEmailTemplate = ({
   const previewText = msg`A member has joined your organisation on Documenso`;
 
   return (
-    <Html>
-      <Head />
-      <Body className="mx-auto my-auto font-sans">
-        <Preview>{_(previewText)}</Preview>
+    <BbakEmailLayout assetBaseUrl={assetBaseUrl} previewText={_(previewText)}>
+      <Section>
+        <TemplateImage className="mx-auto" assetBaseUrl={assetBaseUrl} staticAsset="add-user.png" />
+      </Section>
+      <Section className="p-2 text-muted-foreground">
+        <Text className="text-center font-medium text-foreground text-lg">
+          <Trans>A new member has joined your organisation {organisationName}</Trans>
+        </Text>
 
-        <Section className="bg-background text-muted-foreground">
-          <Container className="mx-auto mt-8 mb-2 max-w-xl rounded-lg border border-border border-solid p-2 backdrop-blur-sm">
-            <TemplateBrandingLogo assetBaseUrl={assetBaseUrl} className="mb-4 h-6 p-2" />
-
-            <Section>
-              <TemplateImage className="mx-auto" assetBaseUrl={assetBaseUrl} staticAsset="add-user.png" />
-            </Section>
-
-            <Section className="p-2 text-muted-foreground">
-              <Text className="text-center font-medium text-foreground text-lg">
-                <Trans>A new member has joined your organisation {organisationName}</Trans>
-              </Text>
-
-              <div className="mx-auto my-2 w-fit rounded-lg bg-muted px-4 py-2 font-medium text-base text-muted-foreground">
-                {memberName || memberEmail}
-              </div>
-            </Section>
-          </Container>
-
-          <Hr className="mx-auto mt-12 max-w-xl" />
-
-          <Container className="mx-auto max-w-xl">
-            <TemplateFooter isDocument={false} />
-          </Container>
-        </Section>
-      </Body>
-    </Html>
+        <div className="mx-auto my-2 w-fit rounded-lg bg-muted px-4 py-2 font-medium text-base text-muted-foreground">
+          {memberName || memberEmail}
+        </div>
+      </Section>
+    </BbakEmailLayout>
   );
 };
 

@@ -187,12 +187,12 @@ export const EnvelopeRedistributeDialog = ({ envelope, envelopeType, trigger }: 
 
               <DialogFooter className="mt-4">
                 <DialogClose asChild>
-                  <Button type="button" variant="secondary" disabled={isSubmitting}>
+                  <Button type="button" variant="cancel" disabled={isSubmitting}>
                     <Trans>Cancel</Trans>
                   </Button>
                 </DialogClose>
 
-                <Button loading={isSubmitting} type="submit">
+                <Button variant="success" loading={isSubmitting} type="submit">
                   <Trans>Send reminder</Trans>
                 </Button>
               </DialogFooter>

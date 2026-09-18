@@ -1,25 +1,13 @@
-import { mapSecondaryIdToDocumentId } from '@documenso/lib/utils/envelope';
 import { Badge } from '@documenso/ui/primitives/badge';
-import { Button } from '@documenso/ui/primitives/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@documenso/ui/primitives/dropdown-menu';
 import { Separator } from '@documenso/ui/primitives/separator';
 import { Plural, Trans } from '@lingui/react/macro';
-import { EnvelopeType, RecipientRole } from '@prisma/client';
-import { BanIcon, DownloadCloudIcon } from 'lucide-react';
+import { RecipientRole } from '@prisma/client';
 import { Link } from 'react-router';
 import { match } from 'ts-pattern';
 
-import { EnvelopeDownloadDialog } from '~/components/dialogs/envelope-download-dialog';
 import { useEmbedSigningContext } from '~/components/embed/embed-signing-context';
 import { BrandingLogo } from '~/components/general/branding-logo';
 
-import { BrandingLogoIcon } from '../branding-logo-icon';
-import { DocumentSigningRejectDialog } from '../document-signing/document-signing-reject-dialog';
 import { useRequiredEnvelopeSigningContext } from '../document-signing/envelope-signing-provider';
 import { EnvelopeSignerCompleteDialog } from './envelope-signing-complete-dialog';
 
@@ -42,8 +30,7 @@ export const EnvelopeSignerHeader = () => {
             />
           ) : (
             <Link to="/" className="flex-shrink-0">
-              <BrandingLogo className="hidden h-6 w-auto md:block" />
-              <BrandingLogoIcon className="h-6 w-auto md:hidden" />
+              <BrandingLogo className="h-16 w-auto" />
             </Link>
           ))}
 
@@ -75,59 +62,6 @@ export const EnvelopeSignerHeader = () => {
 
         <EnvelopeSignerCompleteDialog />
       </div>
-
-      {/* Mobile Actions button */}
-      <div className="flex-shrink-0 lg:hidden">
-        <MobileDropdownMenu />
-      </div>
     </nav>
-  );
-};
-
-const MobileDropdownMenu = () => {
-  const { envelope, recipient } = useRequiredEnvelopeSigningContext();
-
-  const { allowDocumentRejection } = useEmbedSigningContext() || {};
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Trans>Actions</Trans>
-        </Button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent align="end">
-        <EnvelopeDownloadDialog
-          envelopeId={envelope.id}
-          envelopeStatus={envelope.status}
-          envelopeItems={envelope.envelopeItems}
-          token={recipient.token}
-          trigger={
-            <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
-              <div>
-                <DownloadCloudIcon className="mr-2 h-4 w-4" />
-                <Trans>Download PDF</Trans>
-              </div>
-            </DropdownMenuItem>
-          }
-        />
-
-        {envelope.type === EnvelopeType.DOCUMENT && allowDocumentRejection !== false && (
-          <DocumentSigningRejectDialog
-            documentId={mapSecondaryIdToDocumentId(envelope.secondaryId)}
-            token={recipient.token}
-            trigger={
-              <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
-                <div>
-                  <BanIcon className="mr-2 h-4 w-4" />
-                  <Trans>Reject</Trans>
-                </div>
-              </DropdownMenuItem>
-            }
-          />
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 };

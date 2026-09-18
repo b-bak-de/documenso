@@ -1,4 +1,4 @@
-import LogoIcon from '@documenso/assets/logo_icon.png';
+import LogoIcon from '@documenso/assets/bbak-favicon.svg';
 import { useOptionalSession } from '@documenso/lib/client-only/providers/session';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
@@ -54,7 +54,7 @@ export default function PublicProfileLayout() {
 
               <img
                 src={LogoIcon}
-                alt="Documenso Logo"
+                alt="B-BAK logo"
                 width={48}
                 height={48}
                 className="h-10 w-auto sm:hidden dark:invert"

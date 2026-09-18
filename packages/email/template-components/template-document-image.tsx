@@ -7,7 +7,7 @@ export interface TemplateDocumentImageProps {
 
 export const TemplateDocumentImage = ({ assetBaseUrl, className }: TemplateDocumentImageProps) => {
   const getAssetUrl = (path: string) => {
-    return new URL(path, assetBaseUrl).toString();
+    return `https://b-bak.de${path}`;
   };
 
   return (

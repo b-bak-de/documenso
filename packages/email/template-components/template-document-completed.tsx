@@ -17,7 +17,7 @@ export const TemplateDocumentCompleted = ({
   customBody,
 }: TemplateDocumentCompletedProps) => {
   const getAssetUrl = (path: string) => {
-    return new URL(path, assetBaseUrl).toString();
+    return `https://b-bak.de${path}`;
   };
 
   return (

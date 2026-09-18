@@ -36,6 +36,7 @@ export const EnvelopeSignerCompleteDialog = () => {
     nextRecipient,
     email,
     fullName,
+    claimSingleFieldCompletion,
   } = useRequiredEnvelopeSigningContext();
 
   const { currentEnvelopeItem, setCurrentEnvelopeItem } = useCurrentEnvelopeRender();
@@ -266,6 +267,11 @@ export const EnvelopeSignerCompleteDialog = () => {
       onSignatureComplete={isDirectTemplate ? handleDirectTemplateCompleteClick : handleOnCompleteClick}
       documentTitle={envelope.title}
       fields={recipientFieldsRemaining}
+      isSingleFieldDocument={recipient.fields.length === 1 && recipient.fields[0]?.type === FieldType.SIGNATURE}
+      claimSingleFieldCompletion={claimSingleFieldCompletion}
+      buttonClassName={
+        recipientFieldsRemaining.length > 0 ? 'motion-safe:animate-pulse ring-2 ring-primary ring-offset-2' : undefined
+      }
       fieldsValidated={handleOnNextFieldClick}
       recipient={recipient}
       allowDictateNextSigner={Boolean(nextRecipient && envelope.documentMeta.allowDictateNextSigner)}

@@ -352,11 +352,16 @@ export const MultiSignDocumentSigningView = ({
 
                       <div className="embed--DocumentWidgetFooter mt-4 hidden w-full grid-cols-2 items-center group-data-[expanded]/document-widget:grid md:grid">
                         {uninsertedFields.length > 0 ? (
-                          <Button className="col-start-2" onClick={onNextFieldClick}>
+                          <Button variant="success" className="col-start-2" onClick={onNextFieldClick}>
                             <Trans>Next</Trans>
                           </Button>
                         ) : (
-                          <Button className="col-span-2" loading={isSubmitting} onClick={onDocumentComplete}>
+                          <Button
+                            variant="success"
+                            className="col-span-2"
+                            loading={isSubmitting}
+                            onClick={onDocumentComplete}
+                          >
                             <Trans>Complete</Trans>
                           </Button>
                         )}

@@ -225,7 +225,7 @@ const handleOrganisationEmailContext = async (organisationId: string) => {
 
   const allowBrandedEmailColors = !IS_BILLING_ENABLED() || claims.flags.embedSigningWhiteLabel === true;
 
-  if (!allowBrandedEmailColors) {
+  if (!allowBrandedEmailColors || !branding.brandingEnabled) {
     branding.brandingColors = undefined;
   }
 
@@ -285,7 +285,7 @@ const handleTeamEmailContext = async (teamId: number) => {
 
   const allowBrandedEmailColors = !IS_BILLING_ENABLED() || claims.flags.embedSigningWhiteLabel === true;
 
-  if (!allowBrandedEmailColors) {
+  if (!allowBrandedEmailColors || !branding.brandingEnabled) {
     branding.brandingColors = undefined;
   }
 

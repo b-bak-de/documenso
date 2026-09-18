@@ -5,7 +5,7 @@ import type { MessageDescriptor } from '@lingui/core';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { motion } from 'framer-motion';
 import type { HTMLAttributes } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { cn } from '../../lib/utils';
 import { Button } from '../button';
@@ -40,6 +40,10 @@ export const SignaturePadDialog = ({
 
   const [showSignatureModal, setShowSignatureModal] = useState(false);
   const [signature, setSignature] = useState<string>(value ?? '');
+
+  useEffect(() => {
+    setSignature(value ?? '');
+  }, [showSignatureModal, value]);
 
   return (
     <div
@@ -125,14 +129,15 @@ export const SignaturePadDialog = ({
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="ghost">
+              <Button type="button" variant="cancel">
                 <Trans>Cancel</Trans>
               </Button>
             </DialogClose>
 
             <Button
               type="button"
-              disabled={!signature}
+              variant="success"
+              disabled={!signature && !value}
               onClick={() => {
                 onChange(signature);
                 setShowSignatureModal(false);

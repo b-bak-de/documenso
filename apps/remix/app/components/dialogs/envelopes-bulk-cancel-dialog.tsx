@@ -138,7 +138,7 @@ export const EnvelopesBulkCancelDialog = ({
         </div>
 
         <DialogFooter>
-          <Button type="button" variant="secondary" onClick={() => onOpenChange(false)} disabled={isPending}>
+          <Button type="button" variant="cancel" onClick={() => onOpenChange(false)} disabled={isPending}>
             <Trans>Cancel</Trans>
           </Button>
 

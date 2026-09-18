@@ -469,12 +469,12 @@ export const EnvelopeDistributeDialog = ({
 
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button type="button" variant="secondary" disabled={isSubmitting}>
+                    <Button type="button" variant="cancel" disabled={isSubmitting}>
                       <Trans>Cancel</Trans>
                     </Button>
                   </DialogClose>
 
-                  <Button loading={isSubmitting} disabled={isSyncing} type="submit">
+                  <Button variant="success" loading={isSubmitting} disabled={isSyncing} type="submit">
                     {distributionMethod === DocumentDistributionMethod.EMAIL ? (
                       <Trans>Send</Trans>
                     ) : (

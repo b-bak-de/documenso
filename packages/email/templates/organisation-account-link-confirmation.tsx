@@ -2,9 +2,8 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 
-import { Body, Button, Container, Head, Hr, Html, Preview, Section, Text } from '../components';
-import { TemplateBrandingLogo } from '../template-components/template-branding-logo';
-import { TemplateFooter } from '../template-components/template-footer';
+import { Button, Section, Text } from '../components';
+import { BbakEmailLayout } from '../template-components/bbak-email-layout';
 import TemplateImage from '../template-components/template-image';
 
 type OrganisationAccountLinkConfirmationTemplateProps = {
@@ -28,44 +27,31 @@ export const OrganisationAccountLinkConfirmationTemplate = ({
       : msg`A request has been made to link your Documenso account`;
 
   return (
-    <Html>
-      <Head />
-      <Body className="mx-auto my-auto font-sans">
-        <Preview>{_(previewText)}</Preview>
+    <BbakEmailLayout assetBaseUrl={assetBaseUrl} previewText={_(previewText)}>
+      <Section>
+        <TemplateImage className="mx-auto h-12 w-12" assetBaseUrl={assetBaseUrl} staticAsset="building-2.png" />
+      </Section>
 
-        <Section className="bg-background">
-          <Container className="mx-auto mt-8 mb-2 max-w-xl rounded-lg border border-border border-solid px-2 pt-2 backdrop-blur-sm">
-            <TemplateBrandingLogo assetBaseUrl={assetBaseUrl} className="mb-4 h-6 p-2" />
+      <Section className="p-2 text-muted-foreground">
+        <Text className="text-center font-medium text-foreground text-lg">
+          {type === 'create' ? <Trans>Account creation request</Trans> : <Trans>Link your Documenso account</Trans>}
+        </Text>
 
-            <Section>
-              <TemplateImage className="mx-auto h-12 w-12" assetBaseUrl={assetBaseUrl} staticAsset="building-2.png" />
-            </Section>
+        <Text className="text-center text-base">
+          {type === 'create' ? (
+            <Trans>
+              <span className="font-bold">{organisationName}</span> has requested to create an account on your behalf.
+            </Trans>
+          ) : (
+            <Trans>
+              <span className="font-bold">{organisationName}</span> has requested to link your current Documenso account
+              to their organisation.
+            </Trans>
+          )}
+        </Text>
 
-            <Section className="p-2 text-muted-foreground">
-              <Text className="text-center font-medium text-foreground text-lg">
-                {type === 'create' ? (
-                  <Trans>Account creation request</Trans>
-                ) : (
-                  <Trans>Link your Documenso account</Trans>
-                )}
-              </Text>
-
-              <Text className="text-center text-base">
-                {type === 'create' ? (
-                  <Trans>
-                    <span className="font-bold">{organisationName}</span> has requested to create an account on your
-                    behalf.
-                  </Trans>
-                ) : (
-                  <Trans>
-                    <span className="font-bold">{organisationName}</span> has requested to link your current Documenso
-                    account to their organisation.
-                  </Trans>
-                )}
-              </Text>
-
-              {/* Placeholder text if we want to have the warning in the email as well. */}
-              {/* <Section className="mt-6">
+        {/* Placeholder text if we want to have the warning in the email as well. */}
+        {/* <Section className="mt-6">
                 <Text className="my-0 text-sm">
                   <Trans>
                     By accepting this request, you will be granting{' '}
@@ -93,29 +79,20 @@ export const OrganisationAccountLinkConfirmationTemplate = ({
                 </Text>
               </Section> */}
 
-              <Section className="mt-8 mb-6 text-center">
-                <Button
-                  className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-center font-medium text-primary-foreground text-sm no-underline"
-                  href={confirmationLink}
-                >
-                  <Trans>Review request</Trans>
-                </Button>
-              </Section>
-            </Section>
-
-            <Text className="text-center text-muted-foreground text-xs">
-              <Trans>Link expires in 30 minutes.</Trans>
-            </Text>
-          </Container>
-
-          <Hr className="mx-auto mt-12 max-w-xl" />
-
-          <Container className="mx-auto max-w-xl">
-            <TemplateFooter isDocument={false} />
-          </Container>
+        <Section className="mt-8 mb-6 text-center">
+          <Button
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-center font-medium text-[#111827] text-sm no-underline"
+            href={confirmationLink}
+          >
+            <Trans>Review request</Trans>
+          </Button>
         </Section>
-      </Body>
-    </Html>
+      </Section>
+
+      <Text className="text-center text-muted-foreground text-xs">
+        <Trans>Link expires in 30 minutes.</Trans>
+      </Text>
+    </BbakEmailLayout>
   );
 };
 

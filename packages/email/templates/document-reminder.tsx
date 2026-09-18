@@ -3,11 +3,10 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { RecipientRole } from '@prisma/client';
 
-import { Body, Container, Head, Hr, Html, Preview, Section, Text } from '../components';
-import { TemplateBrandingLogo } from '../template-components/template-branding-logo';
+import { Section, Text } from '../components';
+import { BbakEmailLayout } from '../template-components/bbak-email-layout';
 import { TemplateCustomMessageBody } from '../template-components/template-custom-message-body';
 import { TemplateDocumentReminder } from '../template-components/template-document-reminder';
-import { TemplateFooter } from '../template-components/template-footer';
 
 export type DocumentReminderEmailTemplateProps = {
   recipientName: string;
@@ -35,45 +34,23 @@ export const DocumentReminderEmailTemplate = ({
   const previewText = msg`Reminder to ${action} ${documentName}`;
 
   return (
-    <Html>
-      <Head />
+    <BbakEmailLayout assetBaseUrl={assetBaseUrl} previewText={_(previewText)}>
+      <TemplateDocumentReminder
+        recipientName={recipientName}
+        documentName={documentName}
+        signDocumentLink={signDocumentLink}
+        assetBaseUrl={assetBaseUrl}
+        role={role}
+      />
 
-      <Body className="mx-auto my-auto bg-background font-sans">
-        <Preview>{_(previewText)}</Preview>
-
+      {customBody && (
         <Section>
-          <Container className="mx-auto mt-8 mb-2 max-w-xl rounded-lg border border-border border-solid p-4 backdrop-blur-sm">
-            <Section>
-              <TemplateBrandingLogo assetBaseUrl={assetBaseUrl} className="mb-4 h-6" />
-
-              <TemplateDocumentReminder
-                recipientName={recipientName}
-                documentName={documentName}
-                signDocumentLink={signDocumentLink}
-                assetBaseUrl={assetBaseUrl}
-                role={role}
-              />
-            </Section>
-          </Container>
-
-          {customBody && (
-            <Container className="mx-auto mt-12 max-w-xl">
-              <Section>
-                <Text className="mt-2 text-base text-muted-foreground">
-                  <TemplateCustomMessageBody text={customBody} />
-                </Text>
-              </Section>
-            </Container>
-          )}
-
-          <Hr className="mx-auto mt-12 max-w-xl" />
-
-          <Container className="mx-auto max-w-xl">
-            <TemplateFooter reportUrl={reportUrl} />
-          </Container>
+          <Text className="mt-2 text-base text-muted-foreground">
+            <TemplateCustomMessageBody text={customBody} />
+          </Text>
         </Section>
-      </Body>
-    </Html>
+      )}
+    </BbakEmailLayout>
   );
 };
 

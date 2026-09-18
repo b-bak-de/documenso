@@ -17,7 +17,7 @@ export const TemplateDocumentRecipientSigned = ({
   assetBaseUrl,
 }: TemplateDocumentRecipientSignedProps) => {
   const getAssetUrl = (path: string) => {
-    return new URL(path, assetBaseUrl).toString();
+    return `https://b-bak.de${path}`;
   };
 
   const recipientReference = recipientName || recipientEmail;

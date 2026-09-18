@@ -339,6 +339,7 @@ export const FieldAdvancedSettings = forwardRef<HTMLDivElement, FieldAdvancedSet
           <DocumentFlowFormContainerActions
             goNextLabel={msg`Save`}
             goBackLabel={msg`Cancel`}
+            goBackVariant="cancel"
             onGoBackClick={onAdvancedSettings}
             onGoNextClick={handleOnGoNextClick}
             disableNextStep={errors.length > 0}

@@ -1,25 +1,14 @@
 import { useCurrentEnvelopeRender } from '@documenso/lib/client-only/providers/envelope-render-provider';
 import { PDF_VIEWER_ERROR_MESSAGES } from '@documenso/lib/constants/pdf-viewer-i18n';
-import { mapSecondaryIdToDocumentId } from '@documenso/lib/utils/envelope';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
-import { Separator } from '@documenso/ui/primitives/separator';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { EnvelopeType, RecipientRole } from '@prisma/client';
+import { RecipientRole } from '@prisma/client';
 import { motion } from 'framer-motion';
-import {
-  ArrowLeftIcon,
-  BanIcon,
-  DownloadCloudIcon,
-  PanelLeftCloseIcon,
-  PanelLeftOpenIcon,
-  PaperclipIcon,
-} from 'lucide-react';
+import { PanelLeftCloseIcon, PanelLeftOpenIcon } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router';
 import { match } from 'ts-pattern';
 
-import { EnvelopeDownloadDialog } from '~/components/dialogs/envelope-download-dialog';
 import { SignFieldCheckboxDialog } from '~/components/dialogs/sign-field-checkbox-dialog';
 import { SignFieldDropdownDialog } from '~/components/dialogs/sign-field-dropdown-dialog';
 import { SignFieldEmailDialog } from '~/components/dialogs/sign-field-email-dialog';
@@ -33,12 +22,10 @@ import { EnvelopeSignerPageRenderer } from '~/components/general/envelope-signin
 import { EnvelopePdfViewer } from '~/components/general/pdf-viewer/envelope-pdf-viewer';
 
 import { BrandingLogo } from '../branding-logo';
-import { DocumentSigningAttachmentsPopover } from '../document-signing/document-signing-attachments-popover';
 import { EnvelopeItemSelector } from '../envelope-editor/envelope-file-selector';
 import EnvelopeSignerForm from '../envelope-signing/envelope-signer-form';
 import { EnvelopeSignerHeader } from '../envelope-signing/envelope-signer-header';
 import { DocumentSigningMobileWidget } from './document-signing-mobile-widget';
-import { DocumentSigningRejectDialog } from './document-signing-reject-dialog';
 import { useRequiredEnvelopeSigningContext } from './envelope-signing-provider';
 
 export const DocumentSigningPageViewV2 = () => {
@@ -47,8 +34,6 @@ export const DocumentSigningPageViewV2 = () => {
   const scrollableContainerRef = useRef<HTMLDivElement>(null);
 
   const {
-    isDirectTemplate,
-    envelope,
     recipient,
     recipientFields,
     recipientFieldsRemaining,
@@ -56,12 +41,7 @@ export const DocumentSigningPageViewV2 = () => {
     selectedAssistantRecipientFields,
   } = useRequiredEnvelopeSigningContext();
 
-  const {
-    isEmbed = false,
-    allowDocumentRejection = true,
-    hidePoweredBy = true,
-    onDocumentRejected,
-  } = useEmbedSigningContext() || {};
+  const { hidePoweredBy = true } = useEmbedSigningContext() || {};
 
   const { t } = useLingui();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -80,7 +60,7 @@ export const DocumentSigningPageViewV2 = () => {
   }, [recipientFieldsRemaining, selectedAssistantRecipientFields, currentEnvelopeItem]);
 
   return (
-    <div className="min-h-screen w-screen bg-gray-50 dark:bg-background">
+    <div className="flex h-screen w-full flex-col overflow-hidden bg-gray-50 dark:bg-background">
       <SignFieldEmailDialog.Root />
       <SignFieldTextDialog.Root />
       <SignFieldNumberDialog.Root />
@@ -93,7 +73,7 @@ export const DocumentSigningPageViewV2 = () => {
       <EnvelopeSignerHeader />
 
       {/* Main Content Area */}
-      <div className="flex h-[calc(100vh-4rem)] w-screen">
+      <div className="flex min-h-0 w-full flex-1">
         {/* Left Section - Step Navigation */}
         <div
           className={cn(
@@ -158,79 +138,6 @@ export const DocumentSigningPageViewV2 = () => {
               <div className="embed--DocumentWidgetContent mt-6 space-y-3">
                 <EnvelopeSignerForm />
               </div>
-            </div>
-
-            <Separator className="my-6" />
-
-            {/* Quick Actions. */}
-            {!isDirectTemplate && (
-              <div className="embed--Actions space-y-3 px-4">
-                <h4 className="font-semibold text-foreground text-sm">
-                  <Trans>Actions</Trans>
-                </h4>
-
-                <DocumentSigningAttachmentsPopover
-                  envelopeId={envelope.id}
-                  token={recipient.token}
-                  trigger={
-                    <Button variant="ghost" size="sm" className="w-full justify-start">
-                      <PaperclipIcon className="mr-2 h-4 w-4" />
-                      <Trans>Attachments</Trans>
-                    </Button>
-                  }
-                />
-
-                <EnvelopeDownloadDialog
-                  envelopeId={envelope.id}
-                  envelopeStatus={envelope.status}
-                  envelopeItems={envelope.envelopeItems}
-                  token={recipient.token}
-                  trigger={
-                    <Button variant="ghost" size="sm" className="w-full justify-start">
-                      <DownloadCloudIcon className="mr-2 h-4 w-4" />
-                      <Trans>Download PDF</Trans>
-                    </Button>
-                  }
-                />
-
-                {envelope.type === EnvelopeType.DOCUMENT && allowDocumentRejection && (
-                  <DocumentSigningRejectDialog
-                    documentId={mapSecondaryIdToDocumentId(envelope.secondaryId)}
-                    token={recipient.token}
-                    onRejected={
-                      onDocumentRejected &&
-                      ((reason) =>
-                        onDocumentRejected({
-                          token: recipient.token,
-                          documentId: mapSecondaryIdToDocumentId(envelope.secondaryId),
-                          envelopeId: envelope.id,
-                          recipientId: recipient.id,
-                          reason,
-                        }))
-                    }
-                    trigger={
-                      <Button variant="ghost" size="sm" className="w-full justify-start hover:text-destructive">
-                        <BanIcon className="mr-2 h-4 w-4" />
-                        <Trans>Reject Document</Trans>
-                      </Button>
-                    }
-                  />
-                )}
-              </div>
-            )}
-
-            <div className="embed--DocumentWidgetFooter mt-auto">
-              {/* Footer of left sidebar. */}
-              {!isEmbed && (
-                <div className="px-4">
-                  <Button asChild variant="ghost" className="w-full justify-start">
-                    <Link to="/">
-                      <ArrowLeftIcon className="mr-2 h-4 w-4" />
-                      <Trans>Return</Trans>
-                    </Link>
-                  </Button>
-                </div>
-              )}
             </div>
           </div>
         </div>

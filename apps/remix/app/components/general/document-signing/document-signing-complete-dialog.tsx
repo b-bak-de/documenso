@@ -18,9 +18,8 @@ import { Input } from '@documenso/ui/primitives/input';
 import { useToast } from '@documenso/ui/primitives/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useLingui } from '@lingui/react/macro';
-import type { Field, Recipient } from '@prisma/client';
-import { RecipientRole } from '@prisma/client';
-import { useMemo, useState } from 'react';
+import { type Field, type Recipient, RecipientRole } from '@prisma/client';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
 import { z } from 'zod';
@@ -57,6 +56,9 @@ export type DocumentSigningCompleteDialogProps = {
   buttonSize?: 'sm' | 'lg';
   position?: 'start' | 'end' | 'center';
   disableNameInput?: boolean;
+  isSingleFieldDocument?: boolean;
+  claimSingleFieldCompletion?: () => boolean;
+  buttonClassName?: string;
 };
 
 const ZNextSignerFormSchema = z.object({
@@ -88,6 +90,9 @@ export const DocumentSigningCompleteDialog = ({
   buttonSize = 'lg',
   position,
   disableNameInput = false,
+  isSingleFieldDocument = false,
+  claimSingleFieldCompletion,
+  buttonClassName,
 }: DocumentSigningCompleteDialogProps) => {
   const analytics = useAnalytics();
   const { t, i18n } = useLingui();
@@ -120,10 +125,26 @@ export const DocumentSigningCompleteDialog = ({
 
   const isComplete = useMemo(() => !fieldsContainUnsignedRequiredField(fields), [fields]);
 
+  const isSingleSignatureField = useMemo(() => isSingleFieldDocument, [isSingleFieldDocument]);
+
+  const hasAutoOpenedSingleFieldDialog = useRef(false);
+
   const completionRequires2FA = useMemo(
     () => derivedRecipientAccessAuth.includes('TWO_FACTOR_AUTH'),
     [derivedRecipientAccessAuth],
   );
+
+  useEffect(() => {
+    if (
+      isSingleSignatureField &&
+      isComplete &&
+      !hasAutoOpenedSingleFieldDialog.current &&
+      (claimSingleFieldCompletion?.() ?? true)
+    ) {
+      hasAutoOpenedSingleFieldDialog.current = true;
+      setShowDialog(true);
+    }
+  }, [claimSingleFieldCompletion, isComplete, isSingleSignatureField]);
 
   const handleOpenChange = (open: boolean) => {
     if (form.formState.isSubmitting || !isComplete) {
@@ -214,13 +235,33 @@ export const DocumentSigningCompleteDialog = ({
     <Dialog open={showDialog} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
-          className="w-full"
+          className={`w-full ${buttonClassName ?? ''}`}
           type="button"
+          variant="success"
           size={buttonSize}
           onClick={fieldsValidated}
           loading={isSubmitting}
           disabled={disabled}
         >
+          {!isComplete && (
+            <span className="pointer-events-none mr-3 inline-flex h-5 w-8 shrink-0 animate-envelope-next-field-arrow">
+              <svg
+                aria-hidden="true"
+                className="h-5 w-8"
+                fill="none"
+                viewBox="0 0 32 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2 10H27M21 4L27 10L21 16"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                />
+              </svg>
+            </span>
+          )}
           {match({ isComplete, role: recipient.role })
             .with({ isComplete: false }, () => <Trans>Next Field</Trans>)
             .with({ isComplete: true, role: RecipientRole.APPROVER }, () => <Trans>Approve</Trans>)
@@ -373,14 +414,14 @@ export const DocumentSigningCompleteDialog = ({
                 <DialogFooter className="mt-4">
                   <Button
                     type="button"
-                    variant="secondary"
+                    variant="cancel"
                     onClick={() => setShowDialog(false)}
                     disabled={form.formState.isSubmitting}
                   >
                     <Trans>Cancel</Trans>
                   </Button>
 
-                  <Button type="submit" disabled={!isComplete} loading={form.formState.isSubmitting}>
+                  <Button type="submit" variant="success" disabled={!isComplete} loading={form.formState.isSubmitting}>
                     {match(recipient.role)
                       .with(RecipientRole.VIEWER, () => <Trans>Mark as Viewed</Trans>)
                       .with(RecipientRole.SIGNER, () => <Trans>Sign</Trans>)

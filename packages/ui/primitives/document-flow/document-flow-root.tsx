@@ -7,7 +7,7 @@ import type React from 'react';
 import type { HTMLAttributes } from 'react';
 
 import { cn } from '../../lib/utils';
-import { Button } from '../button';
+import { Button, type ButtonProps } from '../button';
 
 export type DocumentFlowFormContainerProps = HTMLAttributes<HTMLFormElement> & {
   children?: React.ReactNode;
@@ -117,6 +117,7 @@ export type DocumentFlowFormContainerActionsProps = {
   canGoNext?: boolean;
   goNextLabel?: MessageDescriptor;
   goBackLabel?: MessageDescriptor;
+  goBackVariant?: ButtonProps['variant'];
   onGoBackClick?: () => void;
   onGoNextClick?: () => void;
   loading?: boolean;
@@ -129,6 +130,7 @@ export const DocumentFlowFormContainerActions = ({
   canGoNext = true,
   goNextLabel = msg`Continue`,
   goBackLabel = msg`Go Back`,
+  goBackVariant = 'secondary',
   onGoBackClick,
   onGoNextClick,
   loading,
@@ -140,9 +142,9 @@ export const DocumentFlowFormContainerActions = ({
     <div className="mt-4 flex gap-x-4">
       <Button
         type="button"
-        className="flex-1 bg-black/5 hover:bg-black/10 dark:bg-muted dark:hover:bg-muted/80"
+        className="flex-1"
         size="lg"
-        variant="secondary"
+        variant={goBackVariant}
         disabled={disabled || loading || !canGoBack || !onGoBackClick}
         onClick={onGoBackClick}
       >
@@ -151,8 +153,9 @@ export const DocumentFlowFormContainerActions = ({
 
       <Button
         type="button"
-        className="flex-1 bg-primary"
+        className="flex-1"
         size="lg"
+        variant="success"
         disabled={disabled || disableNextStep || loading || !canGoNext}
         loading={loading}
         onClick={onGoNextClick}

@@ -193,7 +193,7 @@ export const DocumentSigningAutoSign = ({ recipient, fields }: DocumentSigningAu
             <DialogFooter className="flex w-full flex-1 flex-nowrap gap-2">
               <Button
                 type="button"
-                variant="secondary"
+                variant="cancel"
                 onClick={() => {
                   setOpen(false);
                 }}
@@ -203,6 +203,7 @@ export const DocumentSigningAutoSign = ({ recipient, fields }: DocumentSigningAu
 
               <Button
                 type="submit"
+                variant="success"
                 className="min-w-[6rem]"
                 loading={form.formState.isSubmitting}
                 disabled={!autoSignableFields.length}

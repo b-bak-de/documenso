@@ -284,7 +284,7 @@ export default function OrganisationSsoConfirmationTokenPage({ loaderData }: Rou
 
         <CardFooter className="flex justify-end gap-3">
           <Button
-            variant="outline"
+            variant="destructive"
             disabled={isDeclining || isLinking}
             onClick={() => declineLinkOrganisationAccount({ token })}
           >
@@ -292,6 +292,7 @@ export default function OrganisationSsoConfirmationTokenPage({ loaderData }: Rou
           </Button>
 
           <Button
+            variant="success"
             disabled={!isConfirmationChecked || isDeclining || isLinking}
             loading={isLinking}
             onClick={() => linkOrganisationAccount({ token })}

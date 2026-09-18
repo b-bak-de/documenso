@@ -72,12 +72,16 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
     selectedAssistantRecipientFields,
     selectedAssistantRecipient,
     isDirectTemplate,
+    typedSignatureEnabled,
+    uploadSignatureEnabled,
+    drawSignatureEnabled,
   } = useRequiredEnvelopeSigningContext();
 
   // Note: We're using refs here due to the closure within the signField function.
   const fullName = useRef(fullNameState);
   const email = useRef(emailState);
   const signature = useRef(signatureState);
+  const autoInsertedSingleSignature = useRef(false);
 
   useEffect(() => {
     fullName.current = fullNameState;
@@ -85,8 +89,45 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
     signature.current = signatureState;
   }, [fullNameState, emailState, signatureState]);
 
+  useEffect(() => {
+    const [field] = recipientFieldsRemaining;
+
+    if (
+      recipient.role !== RecipientRole.SIGNER ||
+      recipientFieldsRemaining.length !== 1 ||
+      field?.type !== FieldType.SIGNATURE ||
+      field.inserted ||
+      !signatureState ||
+      autoInsertedSingleSignature.current
+    ) {
+      return;
+    }
+
+    autoInsertedSingleSignature.current = true;
+
+    void executeActionAuthProcedure({
+      onReauthFormSubmit: async (authOptions) => {
+        const payload = {
+          type: FieldType.SIGNATURE,
+          value: signatureState,
+        } as const;
+        const { inserted } = await signFieldInternal(field.id, payload, authOptions);
+
+        if (inserted && onFieldSigned) {
+          onFieldSigned({
+            fieldId: field.id,
+            value: JSON.stringify(payload.value),
+            isBase64: isBase64Image(payload.value),
+          });
+        }
+      },
+      actionTarget: field.type,
+    }).catch(() => {
+      autoInsertedSingleSignature.current = false;
+    });
+  }, [executeActionAuthProcedure, recipient.role, recipientFieldsRemaining, signatureState, signFieldInternal]);
+
   const cachedRenderFields = useRef<Map<number, Field & { signature?: Signature | null }>>(new Map());
-  const prevShowPendingFieldTooltip = useRef(showPendingFieldTooltip);
 
   const { onFieldSigned, onFieldUnsigned } = useEmbedSigningContext() || {};
 
@@ -383,9 +424,9 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
             field,
             fullName: fullName.current,
             signature: signature.current,
-            typedSignatureEnabled: envelope.documentMeta.typedSignatureEnabled,
-            uploadSignatureEnabled: envelope.documentMeta.uploadSignatureEnabled,
-            drawSignatureEnabled: envelope.documentMeta.drawSignatureEnabled,
+            typedSignatureEnabled,
+            uploadSignatureEnabled,
+            drawSignatureEnabled,
           })
             .then(async (payload) => {
               if (!payload) {
@@ -407,6 +448,7 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
                 setSignature(payload.value);
               } else {
                 await signField(field.id, payload);
+                setSignature(null);
               }
             })
             .finally(() => {
@@ -418,6 +460,14 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
 
     fieldGroup.off('pointerdown');
     fieldGroup.on('pointerdown', handleFieldGroupClick);
+
+    fieldGroup.off('mouseenter mouseleave');
+    fieldGroup.on('mouseenter', () => {
+      pageLayer.current?.getStage()?.container().style.setProperty('cursor', 'pointer');
+    });
+    fieldGroup.on('mouseleave', () => {
+      pageLayer.current?.getStage()?.container().style.removeProperty('cursor');
+    });
   };
 
   const renderFieldOnLayer = (
@@ -547,22 +597,25 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
    * Render fields when they are changed or inserted.
    */
   useEffect(() => {
-    if (!pageLayer.current || !stage.current) {
-      return;
-    }
+    let isActive = true;
 
-    // When the pending-field tooltip toggles, all unsigned required fields need to
-    // be re-rendered so their stroke color updates (green <-> orange). Field-level
-    // properties like `inserted` and `customText` haven't changed, so the cache
-    // would otherwise skip them — clear it to force a fresh render.
-    if (prevShowPendingFieldTooltip.current !== showPendingFieldTooltip) {
+    void Promise.all([document.fonts.load('18px Caveat'), document.fonts.ready]).then(() => {
+      if (!isActive || !pageLayer.current || !stage.current) {
+        return;
+      }
+
+      // Field text is measured by Konva. Re-render after the signature font is
+      // ready so the initial render uses the final metrics instead of fallback metrics.
       cachedRenderFields.current.clear();
-      prevShowPendingFieldTooltip.current = showPendingFieldTooltip;
-    }
 
-    renderFields();
+      renderFields();
 
-    pageLayer.current.batchDraw();
+      pageLayer.current.batchDraw();
+    });
+
+    return () => {
+      isActive = false;
+    };
   }, [localPageFields, showPendingFieldTooltip]);
 
   /**
@@ -596,6 +649,14 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
             key={recipientFieldsRemaining[0].id}
             field={recipientFieldsRemaining[0]}
             color="warning"
+            onClick={() => {
+              const fieldGroup = pageLayer.current?.findOne(`#${recipientFieldsRemaining[0].id}`) as
+                | Konva.Group
+                | undefined;
+              const fieldTarget = fieldGroup?.findOne('.field-rect') || fieldGroup;
+
+              fieldGroup?.fire('pointerdown', { target: fieldTarget });
+            }}
           >
             <Trans>Click to insert field</Trans>
           </EnvelopeFieldToolTip>

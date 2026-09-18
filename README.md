@@ -32,6 +32,16 @@
    <a href="CODE_OF_CONDUCT.md"><img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Contributor Covenant"></a>
 </p>
 
+## License and Source
+
+This repository is a modified version of Documenso. Modifications are maintained by the repository owner and are licensed under the GNU Affero General Public License v3.0 (AGPLv3). The deployed application must provide users with access to the corresponding source code under AGPLv3 section 13.
+
+Source code: https://github.com/b-bak-de/documenso
+
+License: [GNU AGPLv3](LICENSE)
+
+Modification notice: this fork was modified from the upstream Documenso project on September 18, 2026. This software is provided without warranty.
+
 <div align="center">
   <img src="https://github.com/documenso/documenso/assets/13398220/d96ed533-6f34-4a97-be9b-442bdb189c69" style="width: 80%;" />
 </div>

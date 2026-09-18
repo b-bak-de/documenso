@@ -954,12 +954,12 @@ export const EnvelopeEditorSettingsDialog = ({ trigger, ...props }: EnvelopeEdit
 
               <div className="flex flex-row justify-end gap-4 p-6">
                 <DialogClose asChild>
-                  <Button variant="secondary" disabled={form.formState.isSubmitting}>
+                  <Button variant="cancel" disabled={form.formState.isSubmitting}>
                     <Trans>Cancel</Trans>
                   </Button>
                 </DialogClose>
 
-                <Button type="submit" loading={form.formState.isSubmitting}>
+                <Button type="submit" variant="success" loading={form.formState.isSubmitting}>
                   <Trans>Update</Trans>
                 </Button>
               </div>

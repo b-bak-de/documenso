@@ -153,11 +153,11 @@ export const DocumentSigningAuthAccount = ({
       </Alert>
 
       <DialogFooter>
-        <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
+        <Button type="button" variant="cancel" onClick={() => onOpenChange(false)}>
           <Trans>Cancel</Trans>
         </Button>
 
-        <Button onClick={async () => handleChangeAccount(recipient.email)} loading={isSigningOut}>
+        <Button variant="success" onClick={async () => handleChangeAccount(recipient.email)} loading={isSigningOut}>
           <Trans>Login</Trans>
         </Button>
       </DialogFooter>

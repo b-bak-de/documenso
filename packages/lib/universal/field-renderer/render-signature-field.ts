@@ -114,11 +114,40 @@ const createSignatureImage = (signatureImageAsBase64: string, fieldWidth: number
   });
 };
 
+const fitSignatureFontSize = ({
+  text,
+  fontFamily,
+  fontSize,
+  fieldWidth,
+}: {
+  text: string;
+  fontFamily: string;
+  fontSize: number;
+  fieldWidth: number;
+}) => {
+  const measurementNode = new Konva.Text({
+    text,
+    fontFamily,
+    fontSize,
+  });
+
+  const textWidth = measurementNode.width();
+  measurementNode.destroy();
+
+  const availableWidth = Math.max(fieldWidth - 4, 1);
+
+  if (textWidth <= availableWidth) {
+    return fontSize;
+  }
+
+  return Math.max((fontSize * availableWidth) / textWidth, 1);
+};
+
 const createFieldSignature = (field: FieldToRender, options: RenderFieldElementOptions): FieldSignature => {
   const { pageWidth, pageHeight, mode = 'edit', translations } = options;
 
   const { fieldX, fieldY, fieldWidth, fieldHeight } = calculateFieldPosition(field, pageWidth, pageHeight);
-  const fontSize = field.fieldMeta?.fontSize || DEFAULT_SIGNATURE_TEXT_FONT_SIZE;
+  const configuredFontSize = field.fieldMeta?.fontSize || DEFAULT_SIGNATURE_TEXT_FONT_SIZE;
 
   const fieldText = new Konva.Text({
     id: `${field.renderId}-text`,
@@ -181,13 +210,22 @@ const createFieldSignature = (field: FieldToRender, options: RenderFieldElementO
   // Whether we're rendering the field type name (like "Signature") vs actual signed content.
   // Overflow should not apply to the label.
   const isLabel = !signature?.typedSignature;
+  const fontFamily = getSignatureFontFamily(textToRender);
+  const fontSize = isLabel
+    ? 14
+    : fitSignatureFontSize({
+        text: textToRender,
+        fontFamily,
+        fontSize: configuredFontSize,
+        fieldWidth,
+      });
 
   const overflowLayout = calculateOverflowLayout({
     overflowMode: resolveFieldOverflowMode(fieldMeta),
     isLabel,
     textToRender,
     fontSize,
-    fontFamily: getSignatureFontFamily(textToRender),
+    fontFamily,
     lineHeight: 1,
     letterSpacing: 0,
     textAlign: 'center',
@@ -206,10 +244,10 @@ const createFieldSignature = (field: FieldToRender, options: RenderFieldElementO
     x: overflowLayout.x,
     y: overflowLayout.y,
     verticalAlign: overflowLayout.verticalAlign,
-    wrap: overflowLayout.wrap,
+    wrap: isLabel ? 'char' : overflowLayout.wrap,
     text: textToRender,
     fontSize,
-    fontFamily: getSignatureFontFamily(textToRender),
+    fontFamily,
     align: overflowLayout.textAlign,
     width: overflowLayout.width,
     height: overflowLayout.height,
@@ -236,6 +274,26 @@ export const renderSignatureFieldElement = (field: FieldToRender, options: Rende
 
   // Render the field background and text.
   const fieldRect = upsertFieldRect(field, options);
+
+  const previousAttentionAnimation = fieldGroup.getAttr('attentionAnimation') as Konva.Animation | undefined;
+  previousAttentionAnimation?.stop();
+  fieldGroup.setAttr('attentionAnimation', undefined);
+
+  const prefersReducedMotion =
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (field.isValidating && mode === 'sign' && !prefersReducedMotion) {
+    const attentionAnimation = new Konva.Animation((frame) => {
+      const pulse = (Math.sin((frame?.time ?? 0) / 280) + 1) / 2;
+
+      fieldRect.opacity(0.75 + pulse * 0.25);
+      fieldRect.strokeWidth(2 + pulse * 2);
+    }, pageLayer);
+
+    fieldGroup.setAttr('attentionAnimation', attentionAnimation);
+    attentionAnimation.start();
+  }
+
   const { node: fieldSignature, isImageSignature, isLabel } = createFieldSignature(field, options);
 
   fieldGroup.add(fieldRect);
@@ -256,7 +314,7 @@ export const renderSignatureFieldElement = (field: FieldToRender, options: Rende
     if (!isImageSignature) {
       fieldSignature.x(0);
       fieldSignature.y(0);
-      fieldSignature.wrap('word');
+      fieldSignature.wrap(isLabel ? 'char' : 'word');
     }
 
     fieldSignature.width(rectWidth);
@@ -299,7 +357,7 @@ export const renderSignatureFieldElement = (field: FieldToRender, options: Rende
       fieldSignature.y(newOverflowLayout.y);
       fieldSignature.width(newOverflowLayout.width);
       fieldSignature.height(newOverflowLayout.height);
-      fieldSignature.wrap(newOverflowLayout.wrap);
+      fieldSignature.wrap(isLabel ? 'char' : newOverflowLayout.wrap);
       fieldSignature.verticalAlign(newOverflowLayout.verticalAlign);
     } else {
       fieldSignature.width(rectWidth);

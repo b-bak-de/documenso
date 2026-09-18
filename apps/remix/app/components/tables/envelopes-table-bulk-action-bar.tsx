@@ -90,7 +90,7 @@ export const EnvelopesTableBulkActionBar = ({
       {onCancelClick && (
         <Button
           type="button"
-          variant="ghost"
+          variant="cancel"
           size="sm"
           onClick={onCancelClick}
           className="h-8 gap-x-1.5 py-1.5 pr-2.5 pl-2"

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-npm run dev
+docker compose -f docker/development/compose.yml up -d

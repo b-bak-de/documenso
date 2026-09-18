@@ -2595,6 +2595,18 @@ msgstr "Indem Sie den elektronischen Unterzeichnungsdienst von Documenso verwend
 msgid "By proceeding with your electronic signature, you acknowledge and consent that it will be used to sign the given document and holds the same legal validity as a handwritten signature. By completing the electronic signing process, you affirm your understanding and acceptance of these conditions."
 msgstr "Indem Sie fortfahren, Ihre elektronische Unterschrift zu leisten, erkennen Sie an und stimmen zu, dass sie verwendet wird, um das gegebene Dokument zu unterzeichnen, und die gleiche rechtliche Gültigkeit wie eine handschriftliche Unterschrift hat. Durch den Abschluss des elektronischen Unterzeichnungsprozesses bestätigen Sie Ihr Verständnis und Ihre Akzeptanz dieser Bedingungen."
 
+#: apps/remix/app/components/general/document-signing/document-signing-disclosure.tsx
+msgid "By continuing, you confirm that you wish to electronically sign the present document."
+msgstr "Indem Sie fortfahren, bestätigen Sie, dass Sie das vorliegende Dokument elektronisch unterzeichnen möchten."
+
+#: apps/remix/app/components/general/document-signing/document-signing-disclosure.tsx
+msgid "By completing the electronic signing process, you confirm your intention to make the statement contained in this document electronically."
+msgstr "Mit dem Abschluss des elektronischen Unterzeichnungsprozesses bestätigen Sie Ihre Absicht, die in diesem Dokument enthaltene Erklärung elektronisch abzugeben."
+
+#: apps/remix/app/components/general/document-signing/document-signing-disclosure.tsx
+msgid "Read our <0>privacy policy</0>."
+msgstr "Lesen Sie unsere <0>Datenschutzerklärung</0>."
+
 #: apps/remix/app/components/forms/signup.tsx
 msgid "By proceeding, you agree to our <0>Terms of Service</0> and <1>Privacy Policy</1>."
 msgstr "Indem Sie fortfahren, stimmen Sie unseren <0>Nutzungsbedingungen</0> und <1>Datenschutzrichtlinien</1> zu."

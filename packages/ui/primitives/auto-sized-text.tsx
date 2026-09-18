@@ -61,7 +61,7 @@ export function AutoSizedText({ children, className, maxHeight, useRem = false }
       return;
     }
 
-    let newFontSize: number;
+    let newFontSize = fontSize.current;
 
     const targetHeight = maxHeight && maxHeight < parentDimensions.height ? maxHeight : parentDimensions.height;
 
@@ -75,6 +75,8 @@ export function AutoSizedText({ children, className, maxHeight, useRem = false }
       // Scale up if element is smaller than target
       newFontSize = (fontSizeUpperBound.current + fontSize.current) / 2;
       fontSizeLowerBound.current = fontSize.current;
+    } else {
+      return;
     }
 
     fontSize.current = newFontSize;

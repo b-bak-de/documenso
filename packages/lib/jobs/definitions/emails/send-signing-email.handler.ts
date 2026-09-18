@@ -173,9 +173,10 @@ export const run = async ({ payload, io }: { payload: TSendSigningEmailJobDefini
     inviterName: user.name || undefined,
     inviterEmail:
       organisationType === OrganisationType.ORGANISATION ? team?.teamEmail?.email || user.email : user.email,
+    recipientName: name,
     assetBaseUrl,
     signDocumentLink,
-    customBody: renderCustomEmailTemplate(emailMessage, customEmailTemplate),
+    customBody: customEmail?.message ? renderCustomEmailTemplate(emailMessage, customEmailTemplate) : undefined,
     role: recipient.role,
     selfSigner,
     organisationType,

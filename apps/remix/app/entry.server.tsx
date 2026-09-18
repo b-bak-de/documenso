@@ -1,5 +1,5 @@
 import { PassThrough } from 'node:stream';
-import { APP_I18N_OPTIONS } from '@documenso/lib/constants/i18n';
+import { APP_I18N_OPTIONS, type SupportedLanguageCodes } from '@documenso/lib/constants/i18n';
 import { dynamicActivate, extractLocaleData } from '@documenso/lib/utils/i18n';
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
@@ -25,6 +25,12 @@ export default async function handleRequest(
 
   if (!APP_I18N_OPTIONS.supportedLangs.includes(language)) {
     language = extractLocaleData({ headers: request.headers }).lang;
+  }
+
+  const rootLanguage = routerContext.staticHandlerContext.loaderData.root?.lang as SupportedLanguageCodes | undefined;
+
+  if (rootLanguage && APP_I18N_OPTIONS.supportedLangs.includes(rootLanguage)) {
+    language = rootLanguage;
   }
 
   await dynamicActivate(language);

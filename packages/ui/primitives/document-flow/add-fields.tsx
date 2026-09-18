@@ -954,6 +954,7 @@ export const AddFieldsFormPartial = ({
                 documentFlow.onBackStep?.();
               }}
               goBackLabel={canRenderBackButtonAsRemove ? msg`Remove` : undefined}
+              goBackVariant={canRenderBackButtonAsRemove ? 'destructive' : 'secondary'}
               onGoNextClick={handleGoNextClick}
             />
           </DocumentFlowFormContainerFooter>

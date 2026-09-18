@@ -78,6 +78,10 @@ export const DocumentSigningPageViewV1 = ({
 
   const { derivedRecipientAccessAuth, user: authUser } = useRequiredDocumentSigningAuthContext();
 
+  const typedSignatureEnabled = authUser ? true : documentMeta?.typedSignatureEnabled;
+  const uploadSignatureEnabled = authUser ? true : documentMeta?.uploadSignatureEnabled;
+  const drawSignatureEnabled = authUser ? true : documentMeta?.drawSignatureEnabled;
+
   const hasAuthenticator = authUser?.twoFactorEnabled
     ? authUser.twoFactorEnabled && authUser.email === recipient.email
     : false;
@@ -371,6 +375,9 @@ export const DocumentSigningPageViewV1 = ({
                   isSubmitting={isSubmitting}
                   fieldsValidated={fieldsValidated}
                   nextRecipient={nextRecipient}
+                  typedSignatureEnabled={typedSignatureEnabled}
+                  uploadSignatureEnabled={uploadSignatureEnabled}
+                  drawSignatureEnabled={drawSignatureEnabled}
                 />
               </div>
             </div>
@@ -396,9 +403,9 @@ export const DocumentSigningPageViewV1 = ({
                   <DocumentSigningSignatureField
                     key={field.id}
                     field={field}
-                    typedSignatureEnabled={documentMeta?.typedSignatureEnabled}
-                    uploadSignatureEnabled={documentMeta?.uploadSignatureEnabled}
-                    drawSignatureEnabled={documentMeta?.drawSignatureEnabled}
+                    typedSignatureEnabled={typedSignatureEnabled}
+                    uploadSignatureEnabled={uploadSignatureEnabled}
+                    drawSignatureEnabled={drawSignatureEnabled}
                   />
                 ))
                 .with(FieldType.INITIALS, () => <DocumentSigningInitialsField key={field.id} field={field} />)

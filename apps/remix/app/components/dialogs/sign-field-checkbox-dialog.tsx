@@ -141,11 +141,11 @@ export const SignFieldCheckboxDialog = createCallable<SignFieldCheckboxDialogPro
                 </ul>
 
                 <DialogFooter>
-                  <Button type="button" variant="secondary" onClick={() => call.end(null)}>
+                  <Button type="button" variant="cancel" onClick={() => call.end(null)}>
                     <Trans>Cancel</Trans>
                   </Button>
 
-                  <Button type="submit">
+                  <Button type="submit" variant="success">
                     <Trans>Confirm</Trans>
                   </Button>
                 </DialogFooter>

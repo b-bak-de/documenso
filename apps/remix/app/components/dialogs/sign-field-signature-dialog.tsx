@@ -42,11 +42,16 @@ export const SignFieldSignatureDialog = createCallable<SignFieldSignatureDialogP
           <DocumentSigningDisclosure />
 
           <DialogFooter>
-            <Button type="button" variant="secondary" onClick={() => call.end(null)}>
+            <Button type="button" variant="cancel" onClick={() => call.end(null)}>
               <Trans>Cancel</Trans>
             </Button>
 
-            <Button type="button" disabled={!localSignature} onClick={() => call.end(localSignature || null)}>
+            <Button
+              type="button"
+              variant="success"
+              disabled={!localSignature}
+              onClick={() => call.end(localSignature || null)}
+            >
               <Trans>Sign</Trans>
             </Button>
           </DialogFooter>

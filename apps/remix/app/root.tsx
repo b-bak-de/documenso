@@ -2,13 +2,19 @@ import { getOptionalSession } from '@documenso/auth/server/lib/utils/get-session
 import { useAnalytics } from '@documenso/lib/client-only/hooks/use-analytics';
 import { SessionProvider } from '@documenso/lib/client-only/providers/session';
 import { getBasePath } from '@documenso/lib/constants/app';
-import { APP_I18N_OPTIONS, type SupportedLanguageCodes } from '@documenso/lib/constants/i18n';
+import {
+  APP_I18N_OPTIONS,
+  type SupportedLanguageCodes,
+  ZSupportedLanguageCodeSchema,
+} from '@documenso/lib/constants/i18n';
 import { createPublicEnv } from '@documenso/lib/utils/env';
 import { extractLocaleData } from '@documenso/lib/utils/i18n';
+import { prisma } from '@documenso/prisma';
 import { TrpcProvider } from '@documenso/trpc/react';
 import { getOrganisationSession } from '@documenso/trpc/server/organisation-router/get-organisation-session';
 import { Toaster } from '@documenso/ui/primitives/toaster';
 import { TooltipProvider } from '@documenso/ui/primitives/tooltip';
+import { Trans } from '@lingui/react/macro';
 import { NuqsAdapter } from 'nuqs/adapters/react-router/v7';
 import { useEffect } from 'react';
 import {
@@ -44,7 +50,7 @@ export function meta() {
  */
 export const shouldRevalidate = () => false;
 
-export async function loader({ context, request }: Route.LoaderArgs) {
+export async function loader({ context, request, params }: Route.LoaderArgs) {
   const session = await getOptionalSession(request);
 
   const { getTheme } = await themeSessionResolver(request);
@@ -55,6 +61,32 @@ export async function loader({ context, request }: Route.LoaderArgs) {
 
   if (!APP_I18N_OPTIONS.supportedLangs.includes(lang)) {
     lang = extractLocaleData({ headers: request.headers }).lang;
+  }
+
+  const pathname = new URL(request.url).pathname;
+  const isSigningRoute = pathname.split('/').filter(Boolean)[0] === 'sign';
+  let shouldPersistLanguage = true;
+
+  if (isSigningRoute && params.token) {
+    const recipient = await prisma.recipient.findFirst({
+      where: { token: params.token },
+      select: {
+        envelope: {
+          select: {
+            documentMeta: {
+              select: { language: true },
+            },
+          },
+        },
+      },
+    });
+
+    const documentLanguage = ZSupportedLanguageCodeSchema.safeParse(recipient?.envelope.documentMeta?.language);
+
+    if (documentLanguage.success) {
+      lang = documentLanguage.data;
+      shouldPersistLanguage = false;
+    }
   }
 
   const disableAnimations = cookieHeader.includes('__disable_animations=true');
@@ -86,7 +118,7 @@ export async function loader({ context, request }: Route.LoaderArgs) {
     },
     {
       headers: {
-        'Set-Cookie': await langCookie.serialize(lang),
+        ...(shouldPersistLanguage ? { 'Set-Cookie': await langCookie.serialize(lang) } : {}),
       },
     },
   );
@@ -131,9 +163,20 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
     <html translate="no" lang={lang} data-theme={theme} className={theme ?? ''} suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
-        <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/apple-touch-icon.png`} />
-        <link rel="icon" type="image/png" sizes="32x32" href={`${basePath}/favicon-32x32.png`} />
-        <link rel="icon" type="image/png" sizes="16x16" href={`${basePath}/favicon-16x16.png`} />
+        <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/favicon.svg`} />
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href={`${basePath}/bbak-logo-light.svg`}
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href={`${basePath}/bbak-logo-dark.svg`}
+          media="(prefers-color-scheme: dark)"
+        />
+        <link rel="icon" type="image/x-icon" href={`${basePath}/favicon.ico`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href={`${basePath}/site.webmanifest`} />
         <meta name="google" content="notranslate" />
@@ -178,6 +221,26 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
             </TooltipProvider>
           </SessionProvider>
         </NuqsAdapter>
+
+        <footer className="pointer-events-none fixed inset-x-0 bottom-0 z-50 border-border border-t bg-background/95 px-3 py-1 text-center text-muted-foreground text-xs backdrop-blur">
+          <a
+            href="https://github.com/b-bak-de/documenso"
+            target="_blank"
+            rel="noreferrer"
+            className="pointer-events-auto underline hover:text-foreground"
+          >
+            <Trans>Source code</Trans>
+          </a>{' '}
+          <span aria-hidden="true">·</span>{' '}
+          <a
+            href="https://github.com/b-bak-de/documenso/blob/main/LICENSE"
+            target="_blank"
+            rel="noreferrer"
+            className="pointer-events-auto underline hover:text-foreground"
+          >
+            <Trans>AGPLv3</Trans>
+          </a>
+        </footer>
 
         <script
           nonce={nonce(cspNonce)}

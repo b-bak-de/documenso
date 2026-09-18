@@ -304,7 +304,7 @@ export const DocumentSigningSignatureField = ({
               <Button
                 type="button"
                 className="flex-1"
-                variant="secondary"
+                variant="cancel"
                 onClick={() => {
                   setShowSignatureModal(false);
                   setLocalSignature(null);
@@ -312,7 +312,13 @@ export const DocumentSigningSignatureField = ({
               >
                 <Trans>Cancel</Trans>
               </Button>
-              <Button type="button" className="flex-1" disabled={!localSignature} onClick={() => onDialogSignClick()}>
+              <Button
+                type="button"
+                variant="success"
+                className="flex-1"
+                disabled={!localSignature}
+                onClick={() => onDialogSignClick()}
+              >
                 <Trans>Sign</Trans>
               </Button>
             </div>

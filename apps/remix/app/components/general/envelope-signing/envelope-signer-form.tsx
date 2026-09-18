@@ -24,6 +24,9 @@ export default function EnvelopeSignerForm() {
     assistantRecipients,
     selectedAssistantRecipient,
     setSelectedAssistantRecipientId,
+    typedSignatureEnabled,
+    uploadSignatureEnabled,
+    drawSignatureEnabled,
   } = useRequiredEnvelopeSigningContext();
 
   const { isNameLocked, isEmailLocked } = useEmbedSigningContext() || {};
@@ -118,9 +121,9 @@ export default function EnvelopeSignerForm() {
               fullName={fullName}
               value={signature ?? ''}
               onChange={(v) => setSignature(v ?? '')}
-              typedSignatureEnabled={envelope.documentMeta.typedSignatureEnabled}
-              uploadSignatureEnabled={envelope.documentMeta.uploadSignatureEnabled}
-              drawSignatureEnabled={envelope.documentMeta.drawSignatureEnabled}
+              typedSignatureEnabled={typedSignatureEnabled}
+              uploadSignatureEnabled={uploadSignatureEnabled}
+              drawSignatureEnabled={drawSignatureEnabled}
             />
           </div>
         )}

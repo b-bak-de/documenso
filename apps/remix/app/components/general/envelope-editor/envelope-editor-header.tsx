@@ -201,7 +201,7 @@ export default function EnvelopeEditorHeader() {
                 <EnvelopeDistributeDialog
                   documentRootPath={relativePath.documentRootPath}
                   trigger={
-                    <Button size="sm">
+                    <Button variant="success" size="sm">
                       <SendIcon className="mr-2 h-4 w-4" />
                       <Trans>Send Document</Trans>
                     </Button>
@@ -211,7 +211,7 @@ export default function EnvelopeEditorHeader() {
                 <EnvelopeRedistributeDialog
                   envelope={envelope}
                   trigger={
-                    <Button size="sm">
+                    <Button variant="success" size="sm">
                       <SendIcon className="mr-2 h-4 w-4" />
                       <Trans>Resend Document</Trans>
                     </Button>
@@ -227,7 +227,7 @@ export default function EnvelopeEditorHeader() {
                 recipients={envelope.recipients}
                 documentRootPath={relativePath.documentRootPath}
                 trigger={
-                  <Button size="sm">
+                  <Button variant="success" size="sm">
                     <Trans>Use Template</Trans>
                   </Button>
                 }
@@ -237,13 +237,13 @@ export default function EnvelopeEditorHeader() {
             .otherwise(() => null)}
 
           {embedded?.mode === 'create' && (
-            <Button size="sm" onClick={handleCreateEmbeddedEnvelope}>
+            <Button variant="success" size="sm" onClick={handleCreateEmbeddedEnvelope}>
               {isDocument ? <Trans>Create Document</Trans> : <Trans>Create Template</Trans>}
             </Button>
           )}
 
           {embedded?.mode === 'edit' && (
-            <Button size="sm" onClick={handleUpdateEmbeddedEnvelope}>
+            <Button variant="success" size="sm" onClick={handleUpdateEmbeddedEnvelope}>
               {isDocument ? <Trans>Update Document</Trans> : <Trans>Update Template</Trans>}
             </Button>
           )}

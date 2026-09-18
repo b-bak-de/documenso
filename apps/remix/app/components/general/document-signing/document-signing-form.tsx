@@ -40,6 +40,9 @@ export type DocumentSigningFormProps = {
   isSubmitting: boolean;
   fieldsValidated: () => void;
   nextRecipient?: RecipientWithFields;
+  typedSignatureEnabled?: boolean;
+  uploadSignatureEnabled?: boolean;
+  drawSignatureEnabled?: boolean;
 };
 
 export const DocumentSigningForm = ({
@@ -53,6 +56,9 @@ export const DocumentSigningForm = ({
   isSubmitting,
   fieldsValidated,
   nextRecipient,
+  typedSignatureEnabled = document.documentMeta?.typedSignatureEnabled,
+  uploadSignatureEnabled = document.documentMeta?.uploadSignatureEnabled,
+  drawSignatureEnabled = document.documentMeta?.drawSignatureEnabled,
 }: DocumentSigningFormProps) => {
   const { _ } = useLingui();
   const { toast } = useToast();
@@ -133,8 +139,8 @@ export const DocumentSigningForm = ({
               <div className="flex flex-col gap-4 md:flex-row">
                 <Button
                   type="button"
-                  className="w-full bg-black/5 hover:bg-black/10 dark:bg-muted dark:hover:bg-muted/80"
-                  variant="secondary"
+                  className="w-full"
+                  variant="cancel"
                   size="lg"
                   disabled={typeof window !== 'undefined' && window.history.length <= 1}
                   onClick={async () => navigate(-1)}
@@ -212,7 +218,7 @@ export const DocumentSigningForm = ({
               </fieldset>
 
               <div className="mt-6 flex flex-col gap-4 md:flex-row">
-                <Button type="submit" className="w-full" size="lg" loading={isAssistantSubmitting}>
+                <Button type="submit" variant="success" className="w-full" size="lg" loading={isAssistantSubmitting}>
                   <Trans>Continue</Trans>
                 </Button>
               </div>
@@ -257,9 +263,9 @@ export const DocumentSigningForm = ({
                         fullName={fullName}
                         value={signature ?? ''}
                         onChange={(v) => setSignature(v ?? '')}
-                        typedSignatureEnabled={document.documentMeta?.typedSignatureEnabled}
-                        uploadSignatureEnabled={document.documentMeta?.uploadSignatureEnabled}
-                        drawSignatureEnabled={document.documentMeta?.drawSignatureEnabled}
+                        typedSignatureEnabled={typedSignatureEnabled}
+                        uploadSignatureEnabled={uploadSignatureEnabled}
+                        drawSignatureEnabled={drawSignatureEnabled}
                       />
                     </div>
                   )}
@@ -269,8 +275,8 @@ export const DocumentSigningForm = ({
               <div className="mt-6 flex flex-col gap-4 md:flex-row">
                 <Button
                   type="button"
-                  className="w-full bg-black/5 hover:bg-black/10 dark:bg-muted dark:hover:bg-muted/80"
-                  variant="secondary"
+                  className="w-full"
+                  variant="cancel"
                   size="lg"
                   disabled={typeof window !== 'undefined' && window.history.length <= 1}
                   onClick={async () => navigate(-1)}

@@ -24,13 +24,14 @@ const tooltipVariants = cva('font-semibold', {
 interface EnvelopeFieldToolTipProps extends VariantProps<typeof tooltipVariants> {
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
   field: Pick<Field, 'id' | 'inserted' | 'fieldMeta' | 'positionX' | 'positionY' | 'width' | 'height' | 'page'>;
 }
 
 /**
  * Renders a tooltip for a given field.
  */
-export function EnvelopeFieldToolTip({ children, color, className = '', field }: EnvelopeFieldToolTipProps) {
+export function EnvelopeFieldToolTip({ children, color, className = '', field, onClick }: EnvelopeFieldToolTipProps) {
   const [coords, setCoords] = useState({
     x: 0,
     y: 0,
@@ -110,7 +111,19 @@ export function EnvelopeFieldToolTip({ children, color, className = '', field }:
         <Tooltip delayDuration={0} open={!field.inserted || !field.fieldMeta}>
           <TooltipTrigger className="absolute inset-0 w-full"></TooltipTrigger>
 
-          <TooltipContent className={tooltipVariants({ color, className: cn(className, 'z-40') })} sideOffset={2}>
+          <TooltipContent
+            className={tooltipVariants({
+              color,
+              className: cn(
+                className,
+                'z-40',
+                color === 'warning' &&
+                  'pointer-events-auto animate-envelope-tooltip-bob cursor-pointer touch-manipulation overflow-visible px-6 py-3',
+              ),
+            })}
+            sideOffset={2}
+            onClick={onClick}
+          >
             {children}
             <TooltipArrow />
           </TooltipContent>

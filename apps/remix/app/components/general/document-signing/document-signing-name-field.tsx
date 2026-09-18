@@ -213,7 +213,7 @@ export const DocumentSigningNameField = ({ field, onSignField, onUnsignField }: 
               <Button
                 type="button"
                 className="flex-1"
-                variant="secondary"
+                variant="cancel"
                 onClick={() => {
                   setShowFullNameModal(false);
                   setLocalFullName('');
@@ -222,7 +222,13 @@ export const DocumentSigningNameField = ({ field, onSignField, onUnsignField }: 
                 <Trans>Cancel</Trans>
               </Button>
 
-              <Button type="button" className="flex-1" disabled={!localFullName} onClick={() => onDialogSignClick()}>
+              <Button
+                type="button"
+                variant="success"
+                className="flex-1"
+                disabled={!localFullName}
+                onClick={() => onDialogSignClick()}
+              >
                 <Trans>Sign</Trans>
               </Button>
             </div>

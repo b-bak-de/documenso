@@ -1,8 +1,8 @@
 import { unsafe_useEffectOnce } from '@documenso/lib/client-only/hooks/use-effect-once';
 import { SIGNATURE_CANVAS_DPI } from '@documenso/lib/constants/signatures';
 
-import { Trans, useLingui } from '@lingui/react/macro';
-import { Undo2 } from 'lucide-react';
+import { Trans } from '@lingui/react/macro';
+import { Trash2 } from 'lucide-react';
 import type { StrokeOptions } from 'perfect-freehand';
 import { getStroke } from 'perfect-freehand';
 import type { MouseEvent, PointerEvent, TouchEvent } from 'react';
@@ -11,7 +11,6 @@ import { useMemo, useRef, useState } from 'react';
 import { cn } from '../../lib/utils';
 import { checkSignatureValidity, getSvgPathFromStroke } from './helper';
 import { Point } from './point';
-import { SignaturePadColorPicker } from './signature-pad-color-picker';
 
 export type SignaturePadDrawProps = {
   className?: string;
@@ -20,8 +19,6 @@ export type SignaturePadDrawProps = {
 };
 
 export const SignaturePadDraw = ({ className, value, onChange, ...props }: SignaturePadDrawProps) => {
-  const { t } = useLingui();
-
   const $el = useRef<HTMLCanvasElement>(null);
 
   const $imageData = useRef<ImageData | null>(null);
@@ -31,8 +28,6 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
   const [lines, setLines] = useState<Point[][]>([]);
   const [currentLine, setCurrentLine] = useState<Point[]>([]);
   const [isSignatureValid, setIsSignatureValid] = useState<boolean | null>(null);
-
-  const [selectedColor, setSelectedColor] = useState('black');
 
   const perfectFreehandOptions = useMemo(() => {
     const size = $el.current ? Math.min($el.current.height, $el.current.width) * 0.03 : 10;
@@ -83,7 +78,7 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
           ctx.restore();
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
-          ctx.fillStyle = selectedColor;
+          ctx.fillStyle = 'black';
 
           lines.forEach((line) => {
             const pathData = new Path2D(getSvgPathFromStroke(getStroke(line, perfectFreehandOptions)));
@@ -123,7 +118,7 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
         ctx.restore();
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
-        ctx.fillStyle = selectedColor;
+        ctx.fillStyle = 'black';
 
         newLines.forEach((line) => {
           const pathData = new Path2D(getSvgPathFromStroke(getStroke(line, perfectFreehandOptions)));
@@ -183,31 +178,6 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
     setIsPressed(false);
   };
 
-  const onUndoClick = () => {
-    if (lines.length === 0 || !$el.current) {
-      return;
-    }
-
-    const newLines = lines.slice(0, -1);
-    setLines(newLines);
-
-    // Clear and redraw the canvas
-    const ctx = $el.current.getContext('2d');
-    const { width, height } = $el.current;
-    ctx?.clearRect(0, 0, width, height);
-
-    if ($imageData.current) {
-      ctx?.putImageData($imageData.current, 0, 0);
-    }
-
-    newLines.forEach((line) => {
-      const pathData = new Path2D(getSvgPathFromStroke(getStroke(line, perfectFreehandOptions)));
-      ctx?.fill(pathData);
-    });
-
-    onChange?.($el.current.toDataURL());
-  };
-
   unsafe_useEffectOnce(() => {
     if ($el.current) {
       $el.current.width = $el.current.clientWidth * SIGNATURE_CANVAS_DPI;
@@ -235,12 +205,29 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
 
   return (
     <div className={cn('h-full w-full', className)}>
+      {lines.length === 0 && !value && !isPressed && (
+        <svg
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 m-auto h-2/3 w-2/3 text-muted-foreground/60"
+          fill="none"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 220 100"
+        >
+          <path
+            className="signature-pad-guide-path"
+            d="M18 76C33 49 31 22 47 20C61 18 55 51 43 66C31 81 25 73 39 57C57 37 61 73 74 71C86 69 85 46 94 45C101 44 99 70 111 70C122 70 127 57 133 56C141 56 137 72 150 72C164 72 167 60 174 60C181 60 180 72 201 70"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="5"
+          />
+        </svg>
+      )}
+
       <canvas
         data-testid="signature-pad-draw"
         ref={$el}
-        className={cn('h-full w-full', {
-          'dark:hue-rotate-180 dark:invert': selectedColor === 'black',
-        })}
+        className="h-full w-full dark:hue-rotate-180 dark:invert"
         style={{ touchAction: 'none' }}
         onPointerMove={(event) => onMouseMove(event)}
         onPointerDown={(event) => onMouseDown(event)}
@@ -250,27 +237,23 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
         {...props}
       />
 
-      <SignaturePadColorPicker
-        className={cn('transition-opacity duration-100', {
-          'pointer-events-none opacity-0': isPressed,
-        })}
-        selectedColor={selectedColor}
-        setSelectedColor={setSelectedColor}
-      />
-
-      <div
-        className={cn('absolute right-3 bottom-3 flex gap-2 transition-opacity duration-100', {
-          'pointer-events-none opacity-0': isPressed,
-        })}
-      >
-        <button
-          type="button"
-          className="rounded-full p-0 text-[0.688rem] text-muted-foreground/60 ring-offset-background hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          onClick={() => onClearClick()}
+      {(lines.length > 0 || value) && (
+        <div
+          className={cn('absolute right-3 bottom-3 transition-opacity duration-100', {
+            'pointer-events-none opacity-0': isPressed,
+          })}
         >
-          <Trans>Clear Signature</Trans>
-        </button>
-      </div>
+          <button
+            type="button"
+            aria-label="Clear signature"
+            className="flex min-h-6 items-center gap-1 rounded-md bg-destructive px-2 py-1 font-semibold text-destructive-foreground text-xs shadow-md ring-offset-background transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            onClick={() => onClearClick()}
+          >
+            <Trash2 aria-hidden="true" className="h-3 w-3" />
+            <Trans>Clear Signature</Trans>
+          </button>
+        </div>
+      )}
 
       {isSignatureValid === false && (
         <div
@@ -281,26 +264,6 @@ export const SignaturePadDraw = ({ className, value, onChange, ...props }: Signa
           <span className="text-destructive text-xs">
             <Trans>Signature is too small</Trans>
           </span>
-        </div>
-      )}
-
-      {isSignatureValid && lines.length > 0 && (
-        <div
-          className={cn('absolute bottom-4 left-4 flex gap-2 transition-opacity duration-100', {
-            'pointer-events-none opacity-0': isPressed,
-          })}
-        >
-          <button
-            type="button"
-            title={t`Undo`}
-            className="rounded-full p-0 text-[0.688rem] text-muted-foreground/60 ring-offset-background hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            onClick={onUndoClick}
-          >
-            <Undo2 className="h-4 w-4" />
-            <span className="sr-only">
-              <Trans>Undo</Trans>
-            </span>
-          </button>
         </div>
       )}
     </div>

@@ -119,11 +119,11 @@ export const DocumentSigningAuthPassword = ({
             />
 
             <DialogFooter>
-              <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
+              <Button type="button" variant="cancel" onClick={() => onOpenChange(false)}>
                 <Trans>Cancel</Trans>
               </Button>
 
-              <Button type="submit" loading={isCurrentlyAuthenticating}>
+              <Button type="submit" variant="success" loading={isCurrentlyAuthenticating}>
                 <Trans>Sign</Trans>
               </Button>
             </DialogFooter>

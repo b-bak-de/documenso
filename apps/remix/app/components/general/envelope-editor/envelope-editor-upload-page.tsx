@@ -648,7 +648,7 @@ export const EnvelopeEditorUploadPage = () => {
 
       {editorConfig.general.allowAddFieldsStep && (
         <div className="flex justify-end">
-          <Button type="button" onClick={() => void navigateToStep('addFields')}>
+          <Button variant="success" type="button" onClick={() => void navigateToStep('addFields')}>
             <Trans>Add Fields</Trans>
           </Button>
         </div>

@@ -326,6 +326,7 @@ const PendingInvitation = ({
 
           {!actionIsDecline && (
             <Button
+              variant="success"
               onClick={async () => acceptInvitation.mutateAsync({ token })}
               loading={acceptInvitation.isPending}
               disabled={isPending}

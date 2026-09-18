@@ -109,7 +109,7 @@ export function DocumentSigningRejectDialog({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {trigger ?? (
-          <Button variant="outline">
+          <Button variant="destructive">
             <Trans>Reject Document</Trans>
           </Button>
         )}
@@ -149,7 +149,7 @@ export function DocumentSigningRejectDialog({
             <DialogFooter>
               <Button
                 type="button"
-                variant="ghost"
+                variant="cancel"
                 onClick={() => setIsOpen(false)}
                 disabled={form.formState.isSubmitting}
               >

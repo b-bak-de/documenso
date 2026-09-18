@@ -312,7 +312,7 @@ export const DocumentSigningNumberField = ({ field, onSignField, onUnsignField }
               <Button
                 type="button"
                 className="flex-1"
-                variant="secondary"
+                variant="cancel"
                 onClick={() => {
                   setShowNumberModal(false);
                   setLocalNumber(parsedFieldMeta?.value ? String(parsedFieldMeta.value) : '');
@@ -323,6 +323,7 @@ export const DocumentSigningNumberField = ({ field, onSignField, onUnsignField }
 
               <Button
                 type="button"
+                variant="success"
                 className="flex-1"
                 disabled={!localNumber || userInputHasErrors}
                 onClick={() => onDialogSignClick()}

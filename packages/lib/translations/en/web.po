@@ -2590,6 +2590,18 @@ msgstr "By proceeding to use the electronic signature service provided by Docume
 msgid "By proceeding with your electronic signature, you acknowledge and consent that it will be used to sign the given document and holds the same legal validity as a handwritten signature. By completing the electronic signing process, you affirm your understanding and acceptance of these conditions."
 msgstr "By proceeding with your electronic signature, you acknowledge and consent that it will be used to sign the given document and holds the same legal validity as a handwritten signature. By completing the electronic signing process, you affirm your understanding and acceptance of these conditions."
 
+#: apps/remix/app/components/general/document-signing/document-signing-disclosure.tsx
+msgid "By continuing, you confirm that you wish to electronically sign the present document."
+msgstr "By continuing, you confirm that you wish to electronically sign the present document."
+
+#: apps/remix/app/components/general/document-signing/document-signing-disclosure.tsx
+msgid "By completing the electronic signing process, you confirm your intention to make the statement contained in this document electronically."
+msgstr "By completing the electronic signing process, you confirm your intention to make the statement contained in this document electronically."
+
+#: apps/remix/app/components/general/document-signing/document-signing-disclosure.tsx
+msgid "Read our <0>privacy policy</0>."
+msgstr "Read our <0>privacy policy</0>."
+
 #: apps/remix/app/components/forms/signup.tsx
 msgid "By proceeding, you agree to our <0>Terms of Service</0> and <1>Privacy Policy</1>."
 msgstr "By proceeding, you agree to our <0>Terms of Service</0> and <1>Privacy Policy</1>."

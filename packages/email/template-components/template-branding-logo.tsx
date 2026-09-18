@@ -1,6 +1,4 @@
-import { Img, Link } from '../components';
-import { useBranding } from '../providers/branding';
-import { getSafeBrandingUrl } from '../utils/branding-url';
+import { Img, Section, Text } from '../components';
 
 export type TemplateBrandingLogoProps = {
   assetBaseUrl: string;
@@ -8,36 +6,54 @@ export type TemplateBrandingLogoProps = {
 };
 
 /**
- * Renders the email logo.
- *
- * - When custom branding is enabled with a logo, the branding logo is shown.
- *   If a safe (http/https) Brand Website is configured, the logo links to it.
- * - Otherwise the Documenso logo is shown.
+ * Renders the shared B-BAK email header for every transactional email.
  */
-export const TemplateBrandingLogo = ({ assetBaseUrl, className = 'mb-4 h-6' }: TemplateBrandingLogoProps) => {
-  const branding = useBranding();
-
-  const hasCustomBrandingLogo = branding.brandingEnabled && Boolean(branding.brandingLogo);
-
-  if (!hasCustomBrandingLogo) {
-    const documensoLogoUrl = new URL('/static/logo.png', assetBaseUrl).toString();
-
-    return <Img src={documensoLogoUrl} alt="Documenso Logo" className={className} />;
-  }
-
-  const brandingLogo = <Img src={branding.brandingLogo} alt="Branding Logo" className={className} />;
-
-  const safeBrandingUrl = getSafeBrandingUrl(branding.brandingUrl);
-
-  if (!safeBrandingUrl) {
-    return brandingLogo;
-  }
-
+export const TemplateBrandingLogo = ({
+  assetBaseUrl: _assetBaseUrl,
+  className: _className = 'mb-4 h-6',
+}: TemplateBrandingLogoProps) => {
   return (
-    <Link href={safeBrandingUrl} target="_blank">
-      {brandingLogo}
-    </Link>
+    <Section style={styles.header}>
+      <Img alt="B-BAK Logo" height="54" src="https://b-bak.de/b_bak_w.png" style={styles.logo} width="49" />
+      <Text style={styles.wordmark}>
+        B-BAK<span style={styles.accent}>.</span>
+      </Text>
+      <Text style={styles.tagline}>Berlin Berufs- &amp; Arbeitscoaching</Text>
+    </Section>
   );
 };
+
+const styles = {
+  header: {
+    backgroundColor: '#1b263b',
+    borderBottom: '4px solid #e09f3e',
+    padding: '30px 20px',
+    textAlign: 'center',
+  },
+  logo: {
+    display: 'block',
+    height: '54px',
+    margin: '0 auto 10px',
+    width: '49px',
+  },
+  wordmark: {
+    color: '#ffffff',
+    fontFamily: 'Arial, sans-serif',
+    fontSize: '28px',
+    fontWeight: 900,
+    letterSpacing: '-1px',
+    margin: 0,
+  },
+  accent: { color: '#e09f3e' },
+  tagline: {
+    color: '#859bae',
+    fontFamily: 'Arial, sans-serif',
+    fontSize: '11px',
+    fontWeight: 'bold',
+    letterSpacing: '2px',
+    margin: '5px 0 0',
+    textTransform: 'uppercase',
+  },
+} as const;
 
 export default TemplateBrandingLogo;

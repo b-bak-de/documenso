@@ -24,7 +24,7 @@ export const SendDocumentActionDialog = ({ loading, className, ...props }: SendD
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button" className={className}>
+        <Button type="button" variant="success" className={className}>
           {loading && <Loader className="mr-2 h-5 w-5 animate-spin text-documenso" />}
           <Trans>Send</Trans>
         </Button>
@@ -41,17 +41,12 @@ export const SendDocumentActionDialog = ({ loading, className, ...props }: SendD
         </DialogHeader>
 
         <DialogFooter className="mt-4 flex items-center gap-x-4">
-          <Button
-            className="flex-1 border-none bg-black/5 hover:bg-black/10 focus-visible:ring-black/10 dark:bg-muted dark:focus-visible:ring-muted/80 dark:hover:bg-muted/80"
-            type="button"
-            variant="secondary"
-            onClick={() => setOpen(false)}
-          >
+          <Button className="flex-1" type="button" variant="cancel" onClick={() => setOpen(false)}>
             <Trans>Cancel</Trans>
           </Button>
 
           {/* We would use DialogAction here but it interrupts the submit action */}
-          <Button className={className} {...props}>
+          <Button className={className} {...props} variant="success">
             {loading && <Loader className="mr-2 h-5 w-5 animate-spin" />}
             <Trans>Send</Trans>
           </Button>
