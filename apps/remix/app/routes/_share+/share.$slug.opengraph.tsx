@@ -71,16 +71,37 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
         position: 'relative',
       }}
     >
-      <img
-        src={`${baseUrl}/static/og-share-frame2.png`}
-        alt="og-share-frame"
+      <div
         style={{
           position: 'absolute',
           inset: 0,
-          width: '100%',
-          height: '100%',
+          backgroundColor: '#f8fbf7',
         }}
-      />
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: CARD_OFFSET_TOP,
+            left: CARD_OFFSET_LEFT,
+            width: CARD_WIDTH,
+            height: CARD_HEIGHT,
+            border: '2px solid #d9f99d',
+            borderRadius: 24,
+            backgroundColor: '#ffffff',
+          }}
+        />
+        <img
+          src={`${baseUrl}/bbak-logo-light.svg`}
+          alt="B-BAK"
+          style={{
+            position: 'absolute',
+            right: 48,
+            bottom: 24,
+            width: 72,
+            height: 80,
+          }}
+        />
+      </div>
 
       {signatureImage ? (
         <div

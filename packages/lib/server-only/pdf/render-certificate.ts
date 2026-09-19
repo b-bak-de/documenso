@@ -580,7 +580,7 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
     height: brandingHeight,
   });
 
-  const logoPath = path.join(process.cwd(), 'public/static/bbak-wordmark.svg');
+  const logoPath = path.join(process.cwd(), 'public/static/bbak-logo-light.svg');
   const logo = await svgToPng(fs.readFileSync(logoPath, 'utf8'));
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

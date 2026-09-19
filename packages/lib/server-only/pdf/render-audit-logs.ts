@@ -443,7 +443,7 @@ const renderBranding = async () => {
 
   const brandingHeight = 16;
 
-  const logoPath = path.join(process.cwd(), 'public/static/bbak-wordmark.svg');
+  const logoPath = path.join(process.cwd(), 'public/static/bbak-logo-light.svg');
   const logo = await svgToPng(fs.readFileSync(logoPath, 'utf8'));
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
