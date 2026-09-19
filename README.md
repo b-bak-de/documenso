@@ -34,6 +34,8 @@ Source code: https://github.com/b-bak-de/documenso
 
 License: [GNU AGPLv3](LICENSE)
 
+Trademark notice: B-BAK names, logos, and trademarks are not licensed for reuse under the AGPL license. See [TRADEMARKS.md](TRADEMARKS.md).
+
 Modification notice: this fork was modified from the upstream Documenso project on September 18, 2026. This software is provided without warranty.
 
 <div align="center">
