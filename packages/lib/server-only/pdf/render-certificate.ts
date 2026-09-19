@@ -586,11 +586,13 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const img = new SkiaImage(logo) as unknown as HTMLImageElement;
 
+  const qrX = text.width() + 16;
+
   const brandingImage = new Konva.Image({
     image: img,
     height: brandingHeight * 2,
     width: brandingHeight * 2 * (img.width / img.height),
-    x: text.width() + 16,
+    x: qrX + (72 - brandingHeight * 2 * (img.width / img.height)) / 2,
   });
 
   const brandingName = new Konva.Text({
@@ -601,7 +603,7 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
     text: 'B-BAK',
     fontFamily: 'Ubuntu',
     fontStyle: fontMedium,
-    fontSize: 6,
+    fontSize: 8,
   });
 
   const qrSize = qrToken ? 72 : 0;
@@ -628,7 +630,7 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
       image: qrSkiaImage,
       height: qrSize,
       width: qrSize,
-      x: branding.getClientRect().width - qrSize,
+      x: qrX,
       y: 0,
     });
 
