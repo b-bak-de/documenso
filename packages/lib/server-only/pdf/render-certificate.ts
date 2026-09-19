@@ -599,7 +599,7 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
     width: brandingImage.width(),
     align: 'center',
     text: 'B-BAK',
-    fontFamily: 'Inter',
+    fontFamily: 'Ubuntu',
     fontStyle: fontMedium,
     fontSize: 6,
   });

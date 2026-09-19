@@ -28,6 +28,12 @@ export const ensureFontLibrary = () => {
     });
   }
 
+  if (!FontLibrary.has('Ubuntu')) {
+    FontLibrary.use({
+      ['Ubuntu']: [path.join(fontPath, 'Ubuntu-M.ttf')],
+    });
+  }
+
   if (!FontLibrary.has('Noto Sans')) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     FontLibrary.use({
