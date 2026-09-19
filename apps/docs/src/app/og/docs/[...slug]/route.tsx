@@ -8,14 +8,14 @@ export const revalidate = false;
 
 const loadAssets = async () => {
   const [logoBuffer, interRegularData, interSemiBoldData, interBoldData] = await Promise.all([
-    readFile(fileURLToPath(new URL('../../../../../public/logo.png', import.meta.url))),
+    readFile(fileURLToPath(new URL('../../../../../public/bbak-logo-light.svg', import.meta.url))),
     readFile(fileURLToPath(new URL('../../../../../public/fonts/inter-regular.ttf', import.meta.url))),
     readFile(fileURLToPath(new URL('../../../../../public/fonts/inter-semibold.ttf', import.meta.url))),
     readFile(fileURLToPath(new URL('../../../../../public/fonts/inter-bold.ttf', import.meta.url))),
   ]);
 
   return {
-    logoSrc: `data:image/png;base64,${logoBuffer.toString('base64')}`,
+    logoSrc: `data:image/svg+xml;base64,${logoBuffer.toString('base64')}`,
     fonts: [
       { name: 'Inter', data: interRegularData, weight: 400 as const, style: 'normal' as const },
       { name: 'Inter', data: interSemiBoldData, weight: 600 as const, style: 'normal' as const },
