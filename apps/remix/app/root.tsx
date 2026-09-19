@@ -20,6 +20,7 @@ import { useEffect } from 'react';
 import {
   data,
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -164,19 +165,21 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/favicon.svg`} />
-        <link
-          rel="icon"
-          type="image/svg+xml"
-          href={`${basePath}/bbak-logo-light.svg`}
-          media="(prefers-color-scheme: light)"
+        <link id="site-favicon" rel="icon" type="image/x-icon" href={`${basePath}/favicon.ico`} />
+        <script
+          nonce={nonce(cspNonce)}
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
+              const media = window.matchMedia('(prefers-color-scheme: dark)');
+              const favicon = document.getElementById('site-favicon');
+              const updateFavicon = () => {
+                if (favicon) favicon.href = '${basePath}' + (media.matches ? '/bbak-logo-dark.svg?v=3' : '/bbak-logo-light.svg?v=3');
+              };
+              updateFavicon();
+              media.addEventListener('change', updateFavicon);
+            })();`,
+          }}
         />
-        <link
-          rel="icon"
-          type="image/svg+xml"
-          href={`${basePath}/bbak-logo-dark.svg`}
-          media="(prefers-color-scheme: dark)"
-        />
-        <link rel="icon" type="image/x-icon" href={`${basePath}/favicon.ico`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href={`${basePath}/site.webmanifest`} />
         <meta name="google" content="notranslate" />
@@ -224,22 +227,26 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
 
         <footer className="pointer-events-none fixed inset-x-0 bottom-0 z-50 border-border border-t bg-background/95 px-3 py-1 text-center text-muted-foreground text-xs backdrop-blur">
           <a
-            href="https://github.com/b-bak-de/documenso"
+            href="https://b-bak.de/impressum/"
             target="_blank"
             rel="noreferrer"
             className="pointer-events-auto underline hover:text-foreground"
           >
-            <Trans>Source code</Trans>
+            <Trans>Impressum</Trans>
           </a>{' '}
           <span aria-hidden="true">·</span>{' '}
           <a
-            href="https://github.com/b-bak-de/documenso/blob/main/LICENSE"
+            href="https://b-bak.de/datenschutz/"
             target="_blank"
             rel="noreferrer"
             className="pointer-events-auto underline hover:text-foreground"
           >
-            <Trans>AGPLv3</Trans>
-          </a>
+            <Trans>Datenschutz</Trans>
+          </a>{' '}
+          <span aria-hidden="true">·</span>{' '}
+          <Link to="/open-source" className="pointer-events-auto underline hover:text-foreground">
+            <Trans>Open Source</Trans>
+          </Link>
         </footer>
 
         <script

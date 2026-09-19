@@ -1,4 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" version="1.1" transform="rotate(0) scale(1, 1)" viewBox="340.7 253.57 340.58 377.2">
+ <style>
+   @media (prefers-color-scheme: dark) {
+     #Logo > path { fill: #ffffff !important; }
+     #Logo > path:nth-of-type(-n + 4) { fill: #0d1b2a !important; }
+   }
+ </style>
  <g class="layer">
   <title>Layer 1</title>
   <g id="Logo">
