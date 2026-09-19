@@ -20,6 +20,7 @@ import { RECIPIENT_ROLES_DESCRIPTION } from '../../constants/recipient-roles';
 import type { TDocumentAuditLog } from '../../types/document-audit-logs';
 import { DOCUMENT_AUDIT_LOG_TYPE } from '../../types/document-audit-logs';
 import { formatDocumentAuditLogAction } from '../../utils/document-audit-logs';
+import { svgToPng } from '../../utils/images/svg-to-png';
 import { ensureFontLibrary } from './helpers';
 
 export type AuditLogRecipient = {
@@ -437,13 +438,13 @@ const renderRow = (options: RenderRowOptions) => {
   return rowGroup;
 };
 
-const renderBranding = () => {
+const renderBranding = async () => {
   const branding = new Konva.Group();
 
   const brandingHeight = 16;
 
-  const logoPath = path.join(process.cwd(), 'public/static/logo.png');
-  const logo = fs.readFileSync(logoPath);
+  const logoPath = path.join(process.cwd(), 'public/static/bbak-wordmark.svg');
+  const logo = await svgToPng(fs.readFileSync(logoPath, 'utf8'));
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const img = new SkiaImage(logo) as unknown as HTMLImageElement;
@@ -605,7 +606,7 @@ export async function renderAuditLogs({
     overviewCard,
   });
 
-  const brandingGroup = renderBranding();
+  const brandingGroup = await renderBranding();
   const brandingRect = brandingGroup.getClientRect();
   const brandingTopPadding = 24;
 

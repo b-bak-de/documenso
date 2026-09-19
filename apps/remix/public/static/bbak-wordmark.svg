@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="48" viewBox="0 0 220 48" role="img" aria-label="B-BAK">
+  <rect x="2" y="2" width="44" height="44" rx="10" fill="#f2d675" stroke="#1b263b" stroke-width="3"/>
+  <path d="M10 16h28M10 24h28M10 32h28M16 10v28M24 10v28M32 10v28" stroke="#fff" stroke-width="3"/>
+  <text x="58" y="34" fill="#1b263b" font-family="Arial, sans-serif" font-size="30" font-weight="700">B-BAK</text>
+</svg>
