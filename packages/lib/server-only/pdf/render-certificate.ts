@@ -588,9 +588,20 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
 
   const brandingImage = new Konva.Image({
     image: img,
-    height: brandingHeight,
-    width: brandingHeight * (img.width / img.height),
+    height: brandingHeight * 2,
+    width: brandingHeight * 2 * (img.width / img.height),
     x: text.width() + 16,
+  });
+
+  const brandingName = new Konva.Text({
+    x: brandingImage.x(),
+    y: brandingImage.height() + 2,
+    width: brandingImage.width(),
+    align: 'center',
+    text: 'B-BAK',
+    fontFamily: 'Inter',
+    fontStyle: fontMedium,
+    fontSize: 6,
   });
 
   const qrSize = qrToken ? 72 : 0;
@@ -600,6 +611,7 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
   });
   logoGroup.add(text);
   logoGroup.add(brandingImage);
+  logoGroup.add(brandingName);
 
   branding.add(logoGroup);
 
