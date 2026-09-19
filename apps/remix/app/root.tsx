@@ -165,20 +165,10 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/favicon.svg`} />
-        <link id="site-favicon" rel="icon" type="image/x-icon" href={`${basePath}/favicon.ico`} />
-        <script
-          nonce={nonce(cspNonce)}
-          dangerouslySetInnerHTML={{
-            __html: `(() => {
-              const media = window.matchMedia('(prefers-color-scheme: dark)');
-              const favicon = document.getElementById('site-favicon');
-              const updateFavicon = () => {
-                if (favicon) favicon.href = '${basePath}' + (media.matches ? '/bbak-logo-dark.svg?v=3' : '/bbak-logo-light.svg?v=3');
-              };
-              updateFavicon();
-              media.addEventListener('change', updateFavicon);
-            })();`,
-          }}
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href={`${basePath}/${theme === 'dark' ? 'bbak-logo-dark.svg' : 'favicon.svg'}`}
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href={`${basePath}/site.webmanifest`} />
