@@ -1,14 +1,15 @@
 # Report security vulnerabilities privately via GitHub Security Advisories (preferred).
-Contact: https://github.com/documenso/documenso/security/advisories/new
+Contact: https://github.com/b-bak-de/documenso/security/advisories/new
 
 # Alternatively, report critical issues privately by email.
-Contact: mailto:security@documenso.com
+Contact: mailto:info@b-bak.de
 
 # Security policy
-Policy: https://github.com/documenso/documenso/security/policy
+Policy: https://github.com/b-bak-de/documenso/security/policy
 
 # General (non-security) issues
-Contact: https://github.com/documenso/documenso/issues/new?assignees=&labels=bug&projects=&template=bug-report.yml
+Contact: https://github.com/b-bak-de/documenso/issues/new?assignees=&labels=bug&projects=&template=bug-report.yml
 
 Preferred-Languages: en
-Canonical: https://documenso.com/.well-known/security.txt
+Canonical: https://sign.b-bak.de/.well-known/security.txt
+Expires: 2027-09-19T00:00:00Z

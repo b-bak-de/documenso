@@ -91,7 +91,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
           }}
         />
         <img
-          src={`${baseUrl}/bbak-logo-light.svg`}
+          src={`${baseUrl}/favicon.svg`}
           alt="B-BAK"
           style={{
             position: 'absolute',
