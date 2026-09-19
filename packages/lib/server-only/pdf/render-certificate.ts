@@ -572,7 +572,7 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
 
   const text = new Konva.Text({
     x: 0,
-    verticalAlign: 'middle',
+    y: 10,
     text: i18n._(msg`Signing certificate provided by`) + ':',
     fontStyle: fontMedium,
     fontFamily: 'Inter',
@@ -586,27 +586,28 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const img = new SkiaImage(logo) as unknown as HTMLImageElement;
 
+  const qrSize = qrToken ? 72 : 0;
   const qrX = text.width() + 16;
+  const logoWidth = brandingHeight * 2 * (img.width / img.height);
+  const brandingWidth = qrToken ? qrSize : logoWidth;
 
   const brandingImage = new Konva.Image({
     image: img,
     height: brandingHeight * 2,
-    width: brandingHeight * 2 * (img.width / img.height),
-    x: qrX + (72 - brandingHeight * 2 * (img.width / img.height)) / 2,
+    width: logoWidth,
+    x: qrX + (brandingWidth - logoWidth) / 2,
   });
 
   const brandingName = new Konva.Text({
-    x: brandingImage.x(),
+    x: qrX,
     y: brandingImage.height() + 2,
-    width: brandingImage.width(),
+    width: brandingWidth,
     align: 'center',
     text: 'B-BAK',
     fontFamily: 'Ubuntu',
     fontStyle: fontMedium,
     fontSize: 8,
   });
-
-  const qrSize = qrToken ? 72 : 0;
 
   const logoGroup = new Konva.Group({
     y: qrSize + 16,
