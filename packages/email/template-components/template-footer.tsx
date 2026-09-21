@@ -77,10 +77,6 @@ export const TemplateFooter = ({ isDocument = true }: TemplateFooterProps) => {
         Umsatzsteuer-Identifikationsnummer (USt-IdNr.): DE461671552
         <br />
         <br />
-        <span style={styles.certification}>
-          <strong>Zertifizierung:</strong> B-BAK Berlin ist ein nach AZAV (Akkreditierungs- und Zulassungsverordnung
-          Arbeitsförderung) staatlich anerkannter und zertifizierter Bildungsträger.
-        </span>
         <div style={styles.copyright}>
           &copy; 2026 B-BAK Berlin Berufs- &amp; Arbeitscoaching UG (haftungsbeschränkt). Alle Rechte vorbehalten.
         </div>
@@ -145,12 +141,6 @@ const styles = {
     display: 'block',
     fontSize: '11px',
     paddingBottom: '4px',
-  },
-  certification: {
-    color: 'rgba(255,255,255,0.3)',
-    display: 'block',
-    fontSize: '9px',
-    paddingBottom: '15px',
   },
   copyright: {
     borderTop: '1px solid rgba(255,255,255,0.05)',

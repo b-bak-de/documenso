@@ -44,7 +44,7 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                     <tbody>
                       <tr>
                         <td align="center" style={styles.header}>
-                          <Link href="https://b-bak.de" style={styles.logoLink}>
+                          <Link href="https://b-bak.de" target="_blank" style={styles.logoLink}>
                             <Img
                               alt="B-BAK Logo"
                               className="email-logo"
@@ -76,9 +76,9 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                             style={styles.footerGrid}
                           >
                             <colgroup>
-                              <col width="33.33%" />
-                              <col width="33.34%" />
-                              <col width="33.33%" />
+                              <col width="38%" />
+                              <col width="24%" />
+                              <col width="38%" />
                             </colgroup>
                             <tbody>
                               <tr>
@@ -87,7 +87,7 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                                   className="contactCell"
                                   style={styles.contactCell}
                                   valign="top"
-                                  width="33.33%"
+                                  width="38%"
                                 >
                                   <table
                                     role="presentation"
@@ -107,6 +107,7 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                                         >
                                           <Link
                                             href="https://maps.google.com/?q=Soorstr.+86,+14050+Berlin"
+                                            target="_blank"
                                             style={styles.iconLink}
                                           >
                                             <Img
@@ -130,9 +131,10 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                                           <span style={styles.contactCopy}>
                                             <Link
                                               href="https://maps.google.com/?q=Soorstr.+86,+14050+Berlin"
+                                              target="_blank"
                                               style={styles.contactLink}
                                             >
-                                              Soorstraße 86
+                                              Soorstraße&nbsp;86
                                               <br />
                                               14050 Berlin
                                             </Link>
@@ -147,7 +149,7 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                                   className="footerSeparatorCell"
                                   style={styles.footerSeparatorCell}
                                   valign="middle"
-                                  width="33.34%"
+                                  width="24%"
                                 >
                                   <table
                                     role="presentation"
@@ -170,7 +172,7 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                                   className="contactCell"
                                   style={styles.contactCell}
                                   valign="top"
-                                  width="33.33%"
+                                  width="38%"
                                 >
                                   <table
                                     role="presentation"
@@ -209,7 +211,7 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                                         >
                                           <span style={styles.contactCopy}>
                                             <Link href="tel:03032593883" style={styles.contactLink}>
-                                              030 325 938 83
+                                              030&nbsp;325&nbsp;938&nbsp;83
                                             </Link>
                                             <span style={styles.hours}>Mo–Fr&nbsp;09:30‑16:30</span>
                                           </span>
@@ -226,7 +228,7 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                               </tr>
                               <tr>
                                 <td align="center" style={styles.socialCell} width="33.33%">
-                                  <Link href="https://b-bak.de" style={styles.socialLink}>
+                                  <Link href="https://b-bak.de" target="_blank" style={styles.socialLink}>
                                     <Img
                                       alt="Website"
                                       className="socialIcon"
@@ -238,7 +240,11 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                                   </Link>
                                 </td>
                                 <td align="center" style={styles.socialCell} width="33.33%">
-                                  <Link href="https://www.instagram.com/bbak.de/" style={styles.socialLink}>
+                                  <Link
+                                    href="https://www.instagram.com/bbak.de/"
+                                    target="_blank"
+                                    style={styles.socialLink}
+                                  >
                                     <Img
                                       alt="Instagram"
                                       className="socialIcon"
@@ -250,7 +256,7 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
                                   </Link>
                                 </td>
                                 <td align="center" style={styles.socialCell} width="33.33%">
-                                  <Link href="https://t.me/b_bak_de" style={styles.socialLink}>
+                                  <Link href="https://t.me/b_bak_de" target="_blank" style={styles.socialLink}>
                                     <Img
                                       alt="Telegram"
                                       className="socialIcon"
@@ -302,7 +308,7 @@ export const BbakEmailLayout = ({ children, previewText }: BbakEmailLayoutProps)
 
 const styles = {
   body: {
-    backgroundColor: '#f8f9fa',
+    backgroundColor: 'transparent',
     color: '#1b263b',
     fontFamily: 'Arial, sans-serif',
     height: '100%',
@@ -311,8 +317,8 @@ const styles = {
     width: '100%',
   },
   preheader: { display: 'none', fontSize: 0, lineHeight: 0, maxHeight: 0, maxWidth: 0, overflow: 'hidden' },
-  center: { backgroundColor: '#f8f9fa', padding: '40px 0', width: '100%' },
-  outerTable: { backgroundColor: '#f8f9fa', borderCollapse: 'collapse', width: '100%' },
+  center: { backgroundColor: 'transparent', padding: '40px 0', width: '100%' },
+  outerTable: { backgroundColor: 'transparent', borderCollapse: 'collapse', width: '100%' },
   outerCell: { padding: 0 },
   contentCard: {
     backgroundColor: '#fff',
@@ -368,13 +374,27 @@ const styles = {
   contactText: {
     color: '#f4f5f7',
     fontFamily: 'Arial, sans-serif',
-    fontSize: '13px',
-    lineHeight: '20px',
-    textAlign: 'center',
+    fontSize: '15px',
+    lineHeight: '22px',
+    textAlign: 'justify',
   },
-  contactCopy: { display: 'inline-block', textAlign: 'left' },
-  contactLink: { color: '#f4f5f7', display: 'block', textAlign: 'left', textDecoration: 'none', whiteSpace: 'nowrap' },
-  hours: { display: 'block', fontSize: '11px', lineHeight: '20px', textAlign: 'left', whiteSpace: 'nowrap' },
+  contactCopy: { display: 'inline-block', textAlign: 'justify', textAlignLast: 'justify', width: '100%' },
+  contactLink: {
+    color: '#f4f5f7',
+    display: 'block',
+    textAlign: 'justify',
+    textAlignLast: 'justify',
+    textDecoration: 'none',
+    whiteSpace: 'nowrap',
+  },
+  hours: {
+    display: 'block',
+    fontSize: '11px',
+    lineHeight: '20px',
+    textAlign: 'justify',
+    textAlignLast: 'justify',
+    whiteSpace: 'nowrap',
+  },
   iconLink: { display: 'block', textDecoration: 'none' },
   footerSeparatorCell: { padding: 0 },
   footerSeparatorTable: { width: '1px' },
@@ -383,6 +403,7 @@ const styles = {
   footerGrid: {
     backgroundColor: '#1b263b',
     fontFamily: 'Arial, sans-serif',
+    margin: '0 auto',
     maxWidth: '300px',
     tableLayout: 'fixed',
     width: '300px',
@@ -435,7 +456,7 @@ const darkModeStyles = `
    .email-logo { color-scheme: light only !important; filter: none !important; forced-color-adjust: none !important; }
   :root { color-scheme: light dark; supported-color-schemes: light dark; }
   @media (prefers-color-scheme: dark) {
-    body, .body-bg { background-color: #121212 !important; color: #e0e1dd !important; }
+     body, .body-bg { background-color: transparent !important; color: #e0e1dd !important; }
     .content-card { background-color: #1e1e1e !important; box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important; }
     .text-main, .content-cell .text-foreground, .content-cell [style*="1b263b"], .content-cell [style*="1B263B"], .content-cell [style*="rgb(27,38,59)"], .content-cell [style*="rgb(27, 38, 59)"] { color: #e0e1dd !important; }
     .text-muted, .content-cell .text-muted-foreground, .content-cell [style*="415a77"], .content-cell [style*="415A77"], .content-cell [style*="rgb(65,90,119)"], .content-cell [style*="rgb(65, 90, 119)"] { color: #c2cad6 !important; }
@@ -444,7 +465,7 @@ const darkModeStyles = `
     .content-cell .bg-muted, .content-cell [style*="f1f4f7"], .content-cell [style*="F1F4F7"], .content-cell [style*="rgb(241,244,247)"], .content-cell [style*="rgb(241, 244, 247)"] { background-color: #252a34 !important; }
     .content-cell .border-border { border-color: #3a4b64 !important; }
   }
-  [data-ogsc] body, [data-ogsc] .body-bg { background-color: #121212 !important; color: #e0e1dd !important; }
+  [data-ogsc] body, [data-ogsc] .body-bg { background-color: transparent !important; color: #e0e1dd !important; }
   [data-ogsc] .content-card { background-color: #1e1e1e !important; box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important; }
   [data-ogsc] .text-main, [data-ogsc] .content-cell .text-foreground, [data-ogsc] .content-cell [style*="1b263b"], [data-ogsc] .content-cell [style*="1B263B"], [data-ogsc] .content-cell [style*="rgb(27,38,59)"], [data-ogsc] .content-cell [style*="rgb(27, 38, 59)"] { color: #e0e1dd !important; }
   [data-ogsc] .text-muted, [data-ogsc] .content-cell .text-muted-foreground, [data-ogsc] .content-cell [style*="415a77"], [data-ogsc] .content-cell [style*="415A77"], [data-ogsc] .content-cell [style*="rgb(65,90,119)"], [data-ogsc] .content-cell [style*="rgb(65, 90, 119)"] { color: #c2cad6 !important; }
