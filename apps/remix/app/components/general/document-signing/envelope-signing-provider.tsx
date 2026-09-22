@@ -190,16 +190,19 @@ export const EnvelopeSigningProvider = ({
       const sig = initialSignature || '';
       const isBase64 = isBase64Image(sig);
 
-      if (
-        !sig &&
-        (uploadSignatureEnabled || drawSignatureEnabled) &&
-        envelopeData.recipientSignature?.signatureImageAsBase64
-      ) {
-        return envelopeData.recipientSignature.signatureImageAsBase64;
-      }
+      // Only signed-in users have a persistent signature that may be reused.
+      // Visitors must confirm their signature separately for every document.
+      if (isAuthenticated && !sig) {
+        if (
+          (uploadSignatureEnabled || drawSignatureEnabled) &&
+          envelopeData.recipientSignature?.signatureImageAsBase64
+        ) {
+          return envelopeData.recipientSignature.signatureImageAsBase64;
+        }
 
-      if (!sig && typedSignatureEnabled && envelopeData.recipientSignature?.typedSignature) {
-        return envelopeData.recipientSignature.typedSignature;
+        if (typedSignatureEnabled && envelopeData.recipientSignature?.typedSignature) {
+          return envelopeData.recipientSignature.typedSignature;
+        }
       }
 
       if (isBase64 && (uploadSignatureEnabled || drawSignatureEnabled)) {
