@@ -94,6 +94,7 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
 
     if (
       recipient.role !== RecipientRole.SIGNER ||
+      recipient.fields.length !== 1 ||
       recipientFieldsRemaining.length !== 1 ||
       field?.type !== FieldType.SIGNATURE ||
       field.inserted ||
